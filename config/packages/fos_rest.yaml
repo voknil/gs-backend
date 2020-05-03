@@ -1,0 +1,9 @@
+# Read the documentation: https://symfony.com/doc/master/bundles/FOSRestBundle/index.html
+fos_rest:
+  body_converter:
+    enabled: true
+    validate: true
+    validation_errors_argument: validationErrors
+  exception:
+    enabled: true
+    exception_controller: 'App\Controller\ExceptionController'
