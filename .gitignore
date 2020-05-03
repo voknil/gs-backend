@@ -1,4 +1,4 @@
-
+git rm -r --cached .idea
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -8,3 +8,4 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+.idea
