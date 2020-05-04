@@ -1,14 +1,19 @@
 <?php
 
 
-namespace App\Controller\Api\V2\Requests\User;
+namespace App\Requests\User;
 
 
-use App\Controller\Api\V2\Requests\BaseApiRequest;
+use App\Requests\BaseApiRequest;
 use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UserRegistrationRequest extends BaseApiRequest
+/**
+ * Class AuthRequest
+ *
+ * @package App\Requests\User
+ */
+class AuthRequest extends BaseApiRequest
 {
     /**
      * @Type("string")
