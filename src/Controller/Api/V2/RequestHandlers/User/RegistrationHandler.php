@@ -25,6 +25,7 @@ class RegistrationHandler extends BaseApiHandler
 {
     /**
      * @Route("/api/v2/user/register", methods={"POST"})
+
      * @ParamConverter("request", converter="fos_rest.request_body")
      *
      * @param UserRegistrationRequest          $request

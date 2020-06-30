@@ -10,7 +10,6 @@ class DescriptionEnum
      * @var string
      */
     public const USER_ALREADY_EXISTS = 'User with this email already exists';
-
     /**
      * @var string
      */
@@ -20,5 +19,4 @@ class DescriptionEnum
      * @var string
      */
     public const INCORRECT_PASSWORD = 'Incorrect password';
-
 }
