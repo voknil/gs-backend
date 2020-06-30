@@ -25,3 +25,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+nelmio_api_doc:
+    areas:
+        default:
+            path_patterns: [ ^/api(?!test) ]
+    documentation:
+        host: 213.139.208.6
+        schemes: [http]
+        info:
+            title: GoodSurfing Api
+            description: GoodSurfing dev api
+            version: 2.0.0

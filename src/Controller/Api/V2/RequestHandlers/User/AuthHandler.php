@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Swagger\Annotations as SWG;
 
 /**
  * Class AuthHandler
@@ -35,6 +36,37 @@ class AuthHandler extends BaseApiHandler
      * @throws ValidationException
      * @throws UserNotFoundException
      * @throws PasswordIncorrectException
+     *
+     * * @SWG\Parameter(
+     *          name="body",
+     *          in="body",
+     *          description="JSON Payload",
+     *          required=true,
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(property="email", type="string", example="email@email.com"),
+     *              @SWG\Property(property="password", type="string", example="qwerty12345"),
+     *          )
+     *      ),
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the access JWT token",
+     *     @SWG\Schema(
+     *         type="object",
+     *              	@SWG\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.ezxpfobjm1LSWpGA4UcVsPS3z4rM7HIbXK3XfEySzwM"),
+     *     )
+     *   )
+     * @SWG\Response(
+     *     response=400,
+     *     description="User not found",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="result", type="string", example="false"),
+     *         @SWG\Property(property="error", type="string", example="User not found"),
+     *     )
+     *   )
+     * )
+     * @SWG\Tag(name="user")
      */
     public function __invoke(
         AuthRequest $request,
