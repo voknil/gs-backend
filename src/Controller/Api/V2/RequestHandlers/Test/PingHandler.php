@@ -5,10 +5,9 @@ namespace App\Controller\Api\V2\RequestHandlers\Test;
 
 
 use App\Controller\Api\V2\RequestHandlers\BaseApiHandler;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Json;
 
 /**
  * Class PingHandler
@@ -18,7 +17,12 @@ use Symfony\Component\Validator\Constraints\Json;
 class PingHandler extends BaseApiHandler
 {
     /**
-     * @Route("/api/v2/ping", name="health_check")
+     * @Route("/api/v2/ping", name="health_check", methods={"POST"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the pong ^_^",
+     * )
+     * @SWG\Tag(name="test")
      */
     public function __invoke()
     {
