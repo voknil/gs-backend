@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
-use App\Controller\Api\V2\Requests\User\UserRegistrationRequest;
+use App\Exception\User\PasswordIncorrectException;
+use App\Exception\User\UserNotFoundException;
+use App\Requests\User\AuthRequest;
+use App\Requests\User\UserRegistrationRequest;
 use App\Entity\User;
 use App\Exception\DescriptionEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -10,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Exception\User\UserAlreadyExistsException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -58,6 +61,28 @@ class UserRepository extends ServiceEntityRepository
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    /**
+     * @param AuthRequest $request
+     *
+     * @return User|null
+     * @throws UserNotFoundException
+     * @throws PasswordIncorrectException
+     */
+    public function auth(AuthRequest $request): User
+    {
+        $existsUser = $this->findOneBy(['email' => $request->getEmail()]);
+
+        if (!$existsUser) {
+            throw new UserNotFoundException(DescriptionEnum::USER_NOT_FOUND);
+        }
+
+        if(!$this->encoder->isPasswordValid($existsUser, $request->getPassword())) {
+            throw  new PasswordIncorrectException(DescriptionEnum::INCORRECT_PASSWORD);
+        }
+
+        return $existsUser;
     }
 
     /**
