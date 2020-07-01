@@ -9,7 +9,9 @@
         "firebase/php-jwt": "^5.2",
         "friendsofsymfony/rest-bundle": "^2.7",
         "jms/serializer-bundle": "^3.5",
+        "nelmio/api-doc-bundle": "^3.6",
         "nelmio/cors-bundle": "^2.0",
+        "predis/predis": "^1.1",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
@@ -18,6 +20,7 @@
         "symfony/options-resolver": "4.4.*",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "4.4.*",
+        "symfony/swiftmailer-bundle": "^3.4",
         "symfony/validator": "4.4.*",
         "symfony/yaml": "4.4.*"
     },

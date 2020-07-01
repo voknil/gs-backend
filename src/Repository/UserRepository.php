@@ -98,4 +98,20 @@ class UserRepository extends ServiceEntityRepository
             throw new UserAlreadyExistsException(DescriptionEnum::USER_ALREADY_EXISTS);
         }
     }
+
+    /**
+     * @param User $user
+     * @param string $password
+     * @return User
+     */
+    public function recoveryPassword(User $user, string $password): User
+    {
+        $encodedPass = $this->encoder->encodePassword($user, $password);
+        $user->setPassword($encodedPass);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $user;
+    }
 }

@@ -17,11 +17,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && pecl update-channels \
     && pecl install APCu event ds \
     && docker-php-ext-enable apcu event ds \
+    && pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ## Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug && rm -rf /tmp/* /var/tmp/*
 
@@ -34,5 +36,6 @@ COPY ./build/local/php.ini /usr/local/etc/php
 
 ## Install application:
 WORKDIR /opt/app
+
 
 USER app
