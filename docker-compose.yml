@@ -64,23 +64,19 @@ services:
       - ./swagger/openapi.json:/openapi.json
     environment:
       SWAGGER_JSON: /openapi.json
-      # API_URL: ""
-  swagger-api:
-    image: danielgtaylor/apisprout
-    container_name: "swagger-api"
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+    networks:
+      - gs
     ports:
-      - "8083:8000"
+      - "6379:6379"
     volumes:
-      - ./swagger/openapi.json:/openapi.json
-    command: /openapi.json
-  swagger-nginx:
-    image: nginx:mainline-alpine
-    container_name: "swagger-nginx"
-    ports:
-      - "8084:8084"
-    volumes:
-      - ./build/swagger/nginx/conf.conf:/etc/nginx/conf.d/default.conf
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
 
+    environment:
+      - REDIS_REPLICATION_MODE=master
 networks:
   gs:
     driver: "bridge"
