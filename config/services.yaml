@@ -31,7 +31,7 @@ nelmio_api_doc:
         default:
             path_patterns: [ ^/api(?!test) ]
     documentation:
-        host: 213.139.208.6
+        host: localhost
         schemes: [http]
         info:
             title: GoodSurfing Api
