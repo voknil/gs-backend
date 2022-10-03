@@ -26,6 +26,6 @@ class PingHandler extends BaseApiHandler
      */
     public function __invoke()
     {
-       return new JsonResponse('pong');
+        return new JsonResponse('pong');
     }
 }
