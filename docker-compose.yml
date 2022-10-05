@@ -1,0 +1,64 @@
+version: '3.8'
+
+x-template: &template
+  networks:
+    - gs
+  env_file:
+    - .env
+  volumes:
+    - .:/opt/app:delegated
+  tmpfs:
+    - /tmp
+    - /tmp/php-opcache
+  build:
+    context: .
+    dockerfile: build/local/Dockerfile
+  image: base_image:8.1.9
+
+services:
+  web:
+    <<: *template
+    environment:
+      - APP_NAME=web
+    expose:
+      - 9000
+    container_name: gs_web
+
+  db:
+    image: postgres:14.5-alpine
+    command: postgres -c shared_buffers=1GB -c wal_buffers=16MB -c work_mem=128MB -c maintenance_work_mem=256MB
+    networks:
+      - gs
+    volumes:
+      - ./var/postgres-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    container_name: gs_db
+    ports:
+      - "5432:5432"
+
+  webserver:
+    networks:
+      - gs
+    image: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+      - db
+    volumes:
+      - './build/local/nginx.conf:/etc/nginx/conf.d/default.conf'
+      - './var/uploads:/usr/share/nginx/uploads'
+      - './public:/opt/app/public'
+    restart: always
+    container_name: gs_webserver
+
+networks:
+  gs:
+    driver: "bridge"
+    driver_opts:
+      com.docker.network.driver.mtu: 1400
