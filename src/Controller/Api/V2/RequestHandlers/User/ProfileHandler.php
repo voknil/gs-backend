@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
 /**
@@ -19,6 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProfileHandler extends BaseApiHandler
 {
+
+
 
     /**
      * @param UserRepository $userRepository
@@ -31,7 +34,7 @@ class ProfileHandler extends BaseApiHandler
         $currentUser = $userRepository->findOneBy(['id' => $id]);
 
         if(!$currentUser) {
-            return new JsonResponse([['result' => 'User is not found!'],],Response::HTTP_NOT_FOUND);
+            return new JsonResponse([['error' => 'User is not found!'],],Response::HTTP_NOT_FOUND);
         }
 
         $data=[
@@ -51,24 +54,22 @@ class ProfileHandler extends BaseApiHandler
 
 
     /**
+     * @param Request $request
      * @param UserRepository $userRepository
-     * @Route("", name="profile_edit", methods={"POST"})
+     * @Route("", name="profile_edit", methods={"PUT"})
      */
     public function editProfile(Request $request, UserRepository $userRepository){
         $request = json_decode($request->getContent(), false);
 
-        $currentUser = $userRepository->findOneBy(['email' => $request->email]);
+        $userFromDB = $userRepository->findOneBy(['email' => $request->email]);
 
-        if(!$currentUser){
-            $currentUser=new User();
-            $currentUser->setEmail($request->email);
-            $currentUser->setPassword($request->password);
+        if(!$userFromDB){
+            return new JsonResponse([['error' => 'User is not found!'],],Response::HTTP_NOT_FOUND);
         }
 
-        //в UserRepository надо добавить метод update
-        //$userRepository->update($currentUser);
+        $userRepository->update($userFromDB, $request);
 
-        return new JsonResponse($currentUser->getEmail());
+        return new JsonResponse($userFromDB->getName());
     }
 
 

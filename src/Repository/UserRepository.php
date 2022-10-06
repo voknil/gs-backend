@@ -114,4 +114,18 @@ class UserRepository extends ServiceEntityRepository
 
         return $user;
     }
+
+    public function update(User $userFromDB, $request)
+    {
+        if($request->name!=""){
+            $userFromDB->setName($request->name);
+        }
+
+        if($request->surname!=""){
+            $userFromDB->setSurname($request->surname);
+        }
+
+        $this->entityManager->persist($userFromDB);
+        $this->entityManager->flush();
+    }
 }
