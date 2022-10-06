@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -23,21 +24,29 @@ class ProfileHandler extends BaseApiHandler
      * @param UserRepository $userRepository
      * @param $id
      * @Route("/{id}", name="profile", methods={"GET"})
+     *
      */
     public function getProfile(UserRepository $userRepository, $id){
 
-       $currentUser = $userRepository->findOneBy(['id' => $id]);
+        $currentUser = $userRepository->findOneBy(['id' => $id]);
 
-        /**
-         * test block
-         */
-       if(!$currentUser){
-           $currentUser = new User();
-           $currentUser->setEmail("test2@email.ru");
-           $currentUser->setPassword(123456);
-       }
+        if(!$currentUser) {
+            return new JsonResponse([['result' => 'User is not found!'],],Response::HTTP_NOT_FOUND);
+        }
 
-        return new JsonResponse($currentUser->getEmail());
+        $data=[
+          'user'=>[
+              'id'=>$currentUser->getId(),
+              'email'=>$currentUser->getEmail(),
+              'name'=>$currentUser->getName(),
+              'surname'=>$currentUser->getSurname(),
+              'birthday'=>$currentUser->getBirthday(),
+              'gender'=>$currentUser->getGender(),
+              'location'=>$currentUser->getLocation()
+          ]
+        ];
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
 
@@ -61,4 +70,7 @@ class ProfileHandler extends BaseApiHandler
 
         return new JsonResponse($currentUser->getEmail());
     }
+
+
+
 }
