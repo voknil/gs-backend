@@ -1,0 +1,13 @@
+### Login
+
+POST http://gs.local/api/v1/login_check
+Content-Type: application/json
+
+{
+  "username": "test@test.com",
+  "password": "Test1234"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###

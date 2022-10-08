@@ -1,0 +1,6 @@
+### User | get
+
+GET {{host}}/api/v1/test
+Accept: application/json, text/plain, */*
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
