@@ -19,34 +19,12 @@ $ sudo echo "127.0.0.1 gs.local" >> /etc/hosts
 ```
 в Windows, редактируем C:\Windows\System32\drivers\etc\hosts
 
-#### 3. Устанавливаем composer зависимости
 
-```shell
-$ docker-compose run web composer install
-```
-
-#### 4. Настраиваем базу
-
-```shell
-$ make migration      
-```
-
-#### 5. Запускаем контейнеры
+#### 3. Запускаем контейнеры
 
 ```shell
 $ docker-compose up --build -d
 ```
-
-#### 6. Проверяем работоспособность
-
-```shell
-$ curl -X 'POST' \
-  'http://localhost/api/v2/ping' \
-  -H 'accept: application/json' \
-  -d ''
-```
-В ответе должен быть "pong". Приложение работает.
-
 
 ## Полезные команды
 
@@ -76,5 +54,5 @@ $ make migration
 \
 Найти роут по части URL
 ```shell
-$ docker-compose exec web bin/console debug:router | grep 'api/v2/users...'
+$ docker-compose exec web bin/console debug:router | grep 'api/v1/users...'
 ```
