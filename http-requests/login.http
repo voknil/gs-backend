@@ -1,6 +1,6 @@
-### Login
+### check
 
-POST http://gs.local/api/v1/login_check
+POST http://gs.local/api/login_check
 Content-Type: application/json
 
 {

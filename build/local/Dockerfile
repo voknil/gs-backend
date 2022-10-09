@@ -38,6 +38,7 @@ COPY --chown=app:app composer.json composer.json
 COPY --chown=app:app composer.lock composer.lock
 COPY --chown=app:app symfony.lock  symfony.lock
 
+### Install xdebug
 RUN pecl install xdebug \
   && docker-php-ext-enable xdebug
 
@@ -66,11 +67,3 @@ COPY --chown=app:app bin                bin
 COPY --chown=app:app public             public
 COPY --chown=app:app config             config
 COPY --chown=app:app src                src
-
-#ARG OPCACHE_DIR
-ENV APP_ENV=prod
-RUN composer dump-autoload --optimize --classmap-authoritative \
-    && touch .env \
-    && composer -vvv run-script post-install-cmd \
-    && rm -rf ~/.composer/cache/* \
-    && rm -rf ${OPCACHE_DIR}

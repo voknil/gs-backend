@@ -4,8 +4,16 @@ nelmio_api_doc:
             title: GoodSurfing
             description: Start your meaningful journey!
             version: 1.0.0
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+        security:
+            - Bearer: [ ]
     areas: # to filter documented areas
         path_patterns: # an array of regexps (document only routes under /api, except /api/doc)
-            - ^/api(?!/doc$)
-        host_patterns: # document only routes with a host of the form api.*
-            - ^api\.
+            - ^/api(?!/v1/doc.json$)
+#        host_patterns: # document only routes with a host of the form api.*
+#            - ^api\.

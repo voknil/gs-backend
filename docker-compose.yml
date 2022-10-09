@@ -50,12 +50,22 @@ services:
     depends_on:
       - web
       - db
+      - swagger_ui
     volumes:
       - './build/local/nginx.conf:/etc/nginx/conf.d/default.conf'
       - './var/uploads:/usr/share/nginx/uploads'
       - './public:/opt/app/public'
     restart: always
     container_name: gs_webserver
+
+  swagger_ui:
+    image: swaggerapi/swagger-ui
+    container_name: gs_swagger
+    environment:
+      BASE_URL: '/api/doc'
+      SWAGGER_JSON_URL: '/api/v1/doc.json'
+    networks:
+      - gs
 
 networks:
   gs:
