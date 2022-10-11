@@ -17,3 +17,7 @@
 ###> PhpStorm ###
 .idea
 ###> PhpStorm ###
+
+###> Docker ###
+docker-compose.override.yml
+###> PhpStorm ###
