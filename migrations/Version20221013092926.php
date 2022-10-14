@@ -28,15 +28,4 @@ final class Version20221013092926 extends AbstractMigration
         $this->addSql('ALTER TABLE "user" ADD location VARCHAR(255) DEFAULT NULL');
     }
 
-    public function down(Schema $schema): void
-    {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE "user" DROP name');
-        $this->addSql('ALTER TABLE "user" DROP surname');
-        $this->addSql('ALTER TABLE "user" DROP company');
-        $this->addSql('ALTER TABLE "user" DROP avatar');
-        $this->addSql('ALTER TABLE "user" DROP birthday');
-        $this->addSql('ALTER TABLE "user" DROP location');
-    }
 }

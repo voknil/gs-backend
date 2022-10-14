@@ -124,23 +124,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getSurname(): ?string
     {
         return $this->surname;
-    }
-
-    public function setSurname(string $surname): self
-    {
-        $this->surname = $surname;
-
-        return $this;
     }
 
     public function getCompany(): ?string
@@ -148,23 +134,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->company;
     }
 
-    public function setCompany(?string $company): self
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
     public function getAvatar(): ?string
     {
         return $this->avatar;
-    }
-
-    public function setAvatar(?string $avatar): self
-    {
-        $this->avatar = $avatar;
-
-        return $this;
     }
 
     public function getBirthday(): ?\DateTimeInterface
@@ -172,23 +144,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->birthday;
     }
 
-    public function setBirthday(?\DateTimeInterface $birthday): self
-    {
-        $this->birthday = $birthday;
-
-        return $this;
-    }
-
     public function getLocation(): ?string
     {
         return $this->location;
     }
 
-    public function setLocation(?string $location): self
-    {
-        $this->location = $location;
 
-        return $this;
-    }
 
 }
