@@ -1,0 +1,6 @@
+### profile | get
+
+GET {{host}}/api/v1/user/ce87ed5a-7ace-4b29-8c60-3501cc6c8505
+Accept: application/json, text/plain, */*
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json

@@ -1,0 +1,9 @@
+services:
+  ### Infrastructure
+  App\User\Infrastructure\Persistence\UserRepository:
+    autowire: true
+    tags:
+      - { name: doctrine.repository_service }
+  ### Presentation
+  App\User\Presentation\Api\V1\UserController:
+    autowire: true
