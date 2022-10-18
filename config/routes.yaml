@@ -1,3 +1,4 @@
+### TODO: Вынести в каждый неймспейс
 controllers:
     resource: ../src/User/Presentation/Api/V1/
     type: attribute
