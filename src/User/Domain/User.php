@@ -4,6 +4,7 @@ namespace App\User\Domain;
 
 use App\User\Infrastructure\Persistence\UserRepository;
 use Cassandra\Date;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -49,9 +50,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10, nullable: true)]
     private string $gender;
 
-    #[ORM\Column(type: "date", nullable: true)]
-    private Date $birthday;
-
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $birthday = null;
 
 
     public function getId(): ?Uuid
@@ -104,4 +104,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompany(): string
+    {
+        return $this->company;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation(): string
+    {
+        return $this->location;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatar(): string
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender(): string
+    {
+        return $this->gender;
+    }
+
+
+
+
 }
