@@ -5,5 +5,3 @@ services:
     tags:
       - { name: doctrine.repository_service }
   ### Presentation
-  App\User\Presentation\Api\V1\UserController:
-    autowire: true
