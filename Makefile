@@ -15,7 +15,6 @@ phpunit-check: ## Проверка юнит тестов
 	$(APP) bin/phpunit --stop-on-failure --no-coverage
 phpunit: ## Генерация coverage
 	$(APP) bin/phpunit --stop-on-failure
-	$(APP) sed -i 's+/opt/app/src+src+g' tests/phpunit/coverage.xml
 cache-clear: ## Очистка кеша
 	$(APP) bin/console cache:clear
 migration: ## Применение новых миграций

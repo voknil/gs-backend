@@ -8,6 +8,7 @@
 /public/bundles/
 /var/
 /vendor/
+/bin/
 ###< symfony/framework-bundle ###
 
 ###> lexik/jwt-authentication-bundle ###
@@ -20,4 +21,9 @@
 
 ###> Docker ###
 docker-compose.override.yml
-###> PhpStorm ###
+###> Docker ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
