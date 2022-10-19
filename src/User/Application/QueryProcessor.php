@@ -22,6 +22,6 @@ final class QueryProcessor
             return new JsonResponse('User not found!', 404);
         }
 
-        return new JsonResponse($this->serializer->serialize($user, 'json'), 200);
+        return new JsonResponse($this->serializer->serialize($user,'json', ['groups' => ['profile']]), 200);
     }
 }

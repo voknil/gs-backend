@@ -8,6 +8,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -21,6 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Uuid $id;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['profile'])]
     private string $email;
 
     #[ORM\Column]
@@ -33,21 +36,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\Column(length: 50, nullable: false)]
+    #[Groups(['profile'])]
     private string $name;
 
     #[ORM\Column(length: 50, nullable: false)]
+    #[Groups(['profile'])]
     private string $surname;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Groups(['profile'])]
     private string $company;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['profile'])]
     private string $location;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['profile'])]
     private string $avatar;
 
     #[ORM\Column(length: 10, nullable: true)]
+    #[Groups(['profile'])]
     private string $gender;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

@@ -5,3 +5,8 @@ services:
     tags:
       - { name: doctrine.repository_service }
   ### Presentation
+  App\User\Application\QueryProcessor:
+    autowire: true
+
+  App\User\DTO\UserDto:
+    autowire: true
