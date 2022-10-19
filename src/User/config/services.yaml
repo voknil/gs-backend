@@ -1,4 +1,13 @@
 services:
+  ### Application
+  App\User\Application\QueryProcessor:
+    arguments:
+      - '@App\User\Domain\UserReadStorage'
+
+  ### Domain
+  App\User\Domain\UserReadStorage:
+    alias: App\User\Infrastructure\Persistence\UserRepository
+
   ### Infrastructure
   App\User\Infrastructure\Persistence\UserRepository:
     autowire: true
