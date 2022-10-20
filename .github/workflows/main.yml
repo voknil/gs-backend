@@ -1,0 +1,41 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches:
+      - 'master'
+    tags:
+      - 'v*'
+    pull_request:
+      branches:
+        - 'master'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: Deploy to host
+        uses: voknil/docker-deployment-action@v1.1
+        with:
+          remote_docker_host: ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}
+          ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+          deployment_mode: docker-compose
+          copy_stack_file: true
+          stack_file_name: docker-compose.yml
+          deploy_path: /opt/goodsurfing/backend/deployment
+          args: up --build -d
+          pre_deployment_command_args: cd /opt/goodsurfing/backend/deployment/ && git pull
