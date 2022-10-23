@@ -50,11 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->getRolesWithDefault($this->roles);
     }
 
     /**
@@ -79,5 +75,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @param array<string> $roles
+     */
+    public static function create(Uuid $id, string $email, array $roles): self
+    {
+        $user = new self();
+        $user->id = $id;
+        $user->email = $email;
+        $user->roles = self::getRolesWithDefault($roles);
+
+        return $user;
+    }
+
+    private static function getRolesWithDefault(array $roles = []): array
+    {
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 }

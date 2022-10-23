@@ -4,6 +4,7 @@ namespace App\User\Infrastructure\Persistence;
 
 use App\User\Domain\User;
 use App\User\Domain\UserReadStorage;
+use App\User\Domain\UserWriteStorage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -19,7 +20,7 @@ use Symfony\Component\Uid\Uuid;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserReadStorage
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserReadStorage, UserWriteStorage
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -35,6 +36,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->getQuery()
                 ->getOneOrNullResult()
             ;
+    }
+
+    public function add(User $user): void
+    {
+        $this->save($user, true);
     }
 
     public function save(User $entity, bool $flush = false): void
