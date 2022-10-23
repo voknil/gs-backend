@@ -8,6 +8,7 @@ use App\User\Application\QueryProcessor;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -35,5 +36,17 @@ class UserController extends AbstractController
             //TODO: Переделать на общий механизм исключений и переводов
             throw new NotFoundHttpException();
         }
+    }
+
+    #[Route('/register', name: 'register', methods: ['POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Register user'
+    )]
+    public function registerUser(Request $request): JsonResponse
+    {
+        return $this->json(
+            'Hello'
+        );
     }
 }

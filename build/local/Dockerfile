@@ -38,9 +38,9 @@ COPY --chown=app:app composer.json composer.json
 COPY --chown=app:app composer.lock composer.lock
 COPY --chown=app:app symfony.lock  symfony.lock
 
-### Install xdebug
-RUN pecl install xdebug \
-  && docker-php-ext-enable xdebug
+#### Install xdebug
+#RUN pecl install xdebug \
+#  && docker-php-ext-enable xdebug
 
 USER app
 
