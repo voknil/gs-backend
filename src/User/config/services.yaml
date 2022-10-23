@@ -4,6 +4,11 @@ services:
     arguments:
       - '@App\User\Domain\UserReadStorage'
 
+  App\User\Application\CommandProcessor:
+    arguments:
+      - '@App\User\Domain\UserReadStorage'
+      - '@security.password_hasher'
+
   ### Domain
   App\User\Domain\UserReadStorage:
     alias: App\User\Infrastructure\Persistence\UserRepository

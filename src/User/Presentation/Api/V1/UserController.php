@@ -3,6 +3,8 @@
 namespace App\User\Presentation\Api\V1;
 
 use App\User\Application\Command\GetUserProfile;
+use App\User\Application\Command\RegisterUser;
+use App\User\Application\CommandProcessor;
 use App\User\Application\Exception\UserNotFound;
 use App\User\Application\QueryProcessor;
 use OpenApi\Attributes as OA;
@@ -16,7 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private readonly QueryProcessor $queryProcessor
+        private readonly QueryProcessor $queryProcessor,
+        private readonly CommandProcessor $commandProcessor,
     )
     {
     }
@@ -45,8 +48,9 @@ class UserController extends AbstractController
     )]
     public function registerUser(Request $request): JsonResponse
     {
+        //TODO: Сделать валидацию
         return $this->json(
-            'Hello'
+            $this->commandProcessor->registerUser(new RegisterUser($request->getContent()))
         );
     }
 }
