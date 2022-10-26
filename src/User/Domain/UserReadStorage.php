@@ -9,4 +9,6 @@ use Symfony\Component\Uid\Uuid;
 interface UserReadStorage
 {
     public function get(Uuid $Id): ?User;
+
+    public function getByEmail(string $email): ?User;
 }
