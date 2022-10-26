@@ -3,6 +3,7 @@
 namespace App\User\Presentation\Api\V1;
 
 use App\User\Application\Command\GetUserProfile;
+use App\User\Application\Command\RecoverPassword;
 use App\User\Application\Command\RegisterUser;
 use App\User\Application\CommandProcessor;
 use App\User\Application\Exception\UserNotFound;
@@ -51,6 +52,18 @@ class UserController extends AbstractController
         //TODO: Сделать валидацию
         return $this->json(
             $this->commandProcessor->registerUser(new RegisterUser($request->getContent()))
+        );
+    }
+
+    #[Route('/recover-password', name: 'recover_password', methods: ['POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Recover password'
+    )]
+    public function recoverPassword(Request $request): JsonResponse
+    {
+        return $this->json(
+            $this->commandProcessor->recoverPassword(new RecoverPassword($request->getContent()))
         );
     }
 }

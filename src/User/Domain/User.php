@@ -77,6 +77,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    public function recoverPassword()
+    {
+        //TODO: Выкидывать событие и слушать
+    }
+
     /**
      * @param array<string> $roles
      */
