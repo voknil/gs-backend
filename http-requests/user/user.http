@@ -12,6 +12,16 @@ Accept: application/json, text/plain, */*
 Content-Type: application/json
 
 {
-  "email": "newuser@test.com",
+  "email": "newuser5@test.com",
   "password": "Test1234"
+}
+
+### recover password
+
+POST {{host}}/api/v1/user/recover-password
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+
+{
+  "email": "newuser@test.com"
 }

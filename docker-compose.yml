@@ -67,6 +67,15 @@ services:
     networks:
       - gs
 
+  mailcatcher:
+    image: sj26/mailcatcher:v0.8.2
+    container_name: gs_mailcatcher
+    ports:
+      - "8880:1080"
+    restart: always
+    networks:
+      - gs
+
 networks:
   gs:
     driver: "bridge"
