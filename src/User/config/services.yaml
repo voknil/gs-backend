@@ -6,11 +6,20 @@ services:
 
   App\User\Application\CommandProcessor:
     arguments:
+      - '@App\User\Domain\UserWriteStorage'
       - '@App\User\Domain\UserReadStorage'
       - '@security.password_hasher'
+      - '@App\User\Application\MessageBuilder'
+
+  App\User\Application\MessageBuilder:
+    arguments:
+      - '@Symfony\Component\Mailer\MailerInterface'
 
   ### Domain
   App\User\Domain\UserReadStorage:
+    alias: App\User\Infrastructure\Persistence\UserRepository
+
+  App\User\Domain\UserWriteStorage:
     alias: App\User\Infrastructure\Persistence\UserRepository
 
   ### Infrastructure

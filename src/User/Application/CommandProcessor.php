@@ -21,6 +21,7 @@ final class CommandProcessor
         private readonly UserWriteStorage $userWriteStorage,
         private readonly UserReadStorage $userReadStorage,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly MessageBuilder $messageBuilder,
     )
     {
     }
@@ -52,6 +53,8 @@ final class CommandProcessor
         );
 
         $this->userWriteStorage->add($user);
+
+        $this->messageBuilder->sendRegisterMessage($user);
 
         return $user;
     }
