@@ -58,6 +58,18 @@ services:
     restart: always
     container_name: gs_webserver
 
+  rabbitmq:
+    image: rabbitmq:3.11.2-management-alpine
+    container_name: gs_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./var/rabbitmq/data/:/var/lib/rabbitmq
+      - ./var/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - gs
+
   swagger_ui:
     image: swaggerapi/swagger-ui
     container_name: gs_swagger

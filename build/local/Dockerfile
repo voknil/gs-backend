@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
     libpq-dev \
     libpng-dev \
+    librabbitmq-dev \
     libjpeg-dev \
     libxml2-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
@@ -16,8 +17,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && pecl update-channels \
     && pecl install APCu ds \
     && docker-php-ext-enable apcu ds \
-    &&  rm -rf /tmp/pear \
+    && rm -rf /tmp/pear \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+##Install amqp
+RUN mkdir -p /usr/src/php/ext/amqp  \
+    && curl -fsSL https://pecl.php.net/get/amqp | tar xvz -C "/usr/src/php/ext/amqp" --strip 1  \
+    && docker-php-ext-install amqp
 
 ## Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -39,8 +45,8 @@ COPY --chown=app:app composer.lock composer.lock
 COPY --chown=app:app symfony.lock  symfony.lock
 
 #### Install xdebug
-#RUN pecl install xdebug \
-#  && docker-php-ext-enable xdebug
+RUN pecl install xdebug \
+  && docker-php-ext-enable xdebug
 
 USER app
 

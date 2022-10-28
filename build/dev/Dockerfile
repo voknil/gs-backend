@@ -19,6 +19,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     &&  rm -rf /tmp/pear \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+##Install amqp
+RUN mkdir -p /usr/src/php/ext/amqp  \
+    && curl -fsSL https://pecl.php.net/get/amqp | tar xvz -C "/usr/src/php/ext/amqp" --strip 1  \
+    && docker-php-ext-install amqp
+
 ## Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
