@@ -24,6 +24,18 @@ services:
       - 9000
     container_name: gs_web
 
+  message_consumer:
+    <<: *template
+    environment:
+      - APP_NAME=message_consumer
+    command: bin/console messenger:consume async
+    depends_on:
+      - web
+      - rabbitmq
+    container_name: gs_message_consumer
+    networks:
+      - gs
+
   db:
     image: postgres:14.5-alpine
     command: postgres -c shared_buffers=1GB -c wal_buffers=16MB -c work_mem=128MB -c maintenance_work_mem=256MB
