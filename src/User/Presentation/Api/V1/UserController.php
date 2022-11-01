@@ -30,6 +30,11 @@ class UserController extends AbstractController
         response: 200,
         description: 'Returns the user profile'
     )]
+    #[OA\Parameter(
+        name: "id",
+        in: "path",
+        example: "1ed59c58-a12e-6f24-b064-1d66a1f32feb"
+    )]
     public function getUserProfile(string $id): JsonResponse
     {
         try {
@@ -42,10 +47,19 @@ class UserController extends AbstractController
         }
     }
 
+
     #[Route('/register', name: 'register', methods: ['POST'])]
     #[OA\Response(
         response: 200,
         description: 'Register user'
+    )]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(type: "object",
+            example:'{
+              "email": "newuser5@test.com",
+              "password": "Test1234"
+            }'
+        )
     )]
     public function registerUser(Request $request): JsonResponse
     {
@@ -59,6 +73,11 @@ class UserController extends AbstractController
     #[OA\Response(
         response: 200,
         description: 'Recover password'
+    )]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(type: "object",
+            example:'{"email": "newuser5@test.com"}'
+        )
     )]
     public function recoverPassword(Request $request): JsonResponse
     {
