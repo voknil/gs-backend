@@ -30,6 +30,10 @@ class UserController extends AbstractController
         response: 200,
         description: 'Returns the user profile'
     )]
+    #[OA\Response(
+        response: 404,
+        description: 'User not found'
+    )]
     #[OA\Parameter(
         name: "id",
         in: "path",
@@ -53,6 +57,10 @@ class UserController extends AbstractController
         response: 200,
         description: 'Register user'
     )]
+    #[OA\Response(
+        response: 409,
+        description: 'User already exists'
+    )]
     #[OA\RequestBody(
         content: new OA\JsonContent(type: "object",
             example:'{
@@ -73,6 +81,10 @@ class UserController extends AbstractController
     #[OA\Response(
         response: 200,
         description: 'Recover password'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'User not found'
     )]
     #[OA\RequestBody(
         content: new OA\JsonContent(type: "object",
