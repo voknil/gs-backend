@@ -2,6 +2,7 @@
 
 namespace App\User\Infrastructure\Persistence;
 
+use App\User\Application\Exception\UserAlreadyExists;
 use App\User\Domain\User;
 use App\User\Domain\UserReadStorage;
 use App\User\Domain\UserWriteStorage;
@@ -35,8 +36,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->andWhere('t.id = :id')
                 ->setParameter('id', $id)
                 ->getQuery()
-                ->getOneOrNullResult()
-            ;
+                ->getOneOrNullResult();
     }
 
     public function getByEmail(string $email): ?User
@@ -46,13 +46,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->andWhere('t.email = :email')
                 ->setParameter('email', $email)
                 ->getQuery()
-                ->getOneOrNullResult()
-            ;
+                ->getOneOrNullResult();
     }
 
+    /**
+     * @throws UserAlreadyExists
+     */
     public function add(User $user): void
     {
-        $this->save($user, true);
+        try {
+            $this->save($user, true);
+        } catch (UniqueConstraintViolationException $exception) {
+            throw new UserAlreadyExists(previous: $exception);
+        }
     }
 
     public function save(User $entity, bool $flush = false): void

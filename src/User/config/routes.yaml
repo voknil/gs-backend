@@ -1,3 +1,0 @@
-controllers:
-  resource: ../src/User/Presentation/Api/V1/
-  type: attribute
