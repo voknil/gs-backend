@@ -2,24 +2,24 @@
 
 namespace App\User\Presentation\Api\V1;
 
+use App\Core\Application\BaseController;
 use App\User\Application\Command\GetUserProfile;
 use App\User\Application\Command\RecoverPassword;
 use App\User\Application\Command\RegisterUser;
 use App\User\Application\CommandProcessor;
+use App\User\Application\Exception\UserAlreadyExists;
 use App\User\Application\Exception\UserNotFound;
 use App\User\Application\QueryProcessor;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: "/api/v1/user", name: "user_")]
-class UserController extends AbstractController
+class UserController extends BaseController
 {
     public function __construct(
-        private readonly QueryProcessor $queryProcessor,
+        private readonly QueryProcessor   $queryProcessor,
         private readonly CommandProcessor $commandProcessor,
     )
     {
@@ -37,8 +37,7 @@ class UserController extends AbstractController
                 $this->queryProcessor->getUserProfile(new GetUserProfile($id))
             );
         } catch (UserNotFound $exception) {
-            //TODO: Переделать на общий механизм исключений и переводов
-            throw new NotFoundHttpException();
+            throw $this->createNotFoundException();
         }
     }
 
@@ -47,12 +46,15 @@ class UserController extends AbstractController
         response: 200,
         description: 'Register user'
     )]
-    public function registerUser(Request $request): JsonResponse
+    public function registerUser(RegisterUser $command): JsonResponse
     {
-        //TODO: Сделать валидацию
-        return $this->json(
-            $this->commandProcessor->registerUser(new RegisterUser($request->getContent()))
-        );
+        try {
+            return $this->json(
+                $this->commandProcessor->registerUser($command)
+            );
+        } catch (UserAlreadyExists $exception) {
+            return $this->json($exception);
+        }
     }
 
     #[Route('/recover-password', name: 'recover_password', methods: ['POST'])]

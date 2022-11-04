@@ -20,6 +20,8 @@ services:
     <<: *template
     environment:
       - APP_NAME=web
+    depends_on:
+      - db
     expose:
       - 9000
     container_name: gs_web
@@ -28,11 +30,12 @@ services:
     <<: *template
     environment:
       - APP_NAME=message_consumer
-    command: bin/console messenger:consume async
+    command: bin/console messenger:consume async -vv
     depends_on:
       - web
       - rabbitmq
     container_name: gs_message_consumer
+    restart: always
     networks:
       - gs
 
@@ -73,6 +76,8 @@ services:
   rabbitmq:
     image: rabbitmq:3.11.2-management-alpine
     container_name: gs_rabbitmq
+    depends_on:
+      - web
     ports:
       - "5672:5672"
       - "15672:15672"

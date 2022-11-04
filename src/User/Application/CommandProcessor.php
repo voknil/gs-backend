@@ -18,14 +18,17 @@ use Symfony\Component\Uid\Uuid;
 final class CommandProcessor
 {
     public function __construct(
-        private readonly UserWriteStorage $userWriteStorage,
-        private readonly UserReadStorage $userReadStorage,
+        private readonly UserWriteStorage            $userWriteStorage,
+        private readonly UserReadStorage             $userReadStorage,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
-        private readonly MessageBuilder $messageBuilder,
+        private readonly MessageBuilder              $messageBuilder,
     )
     {
     }
 
+    /**
+     * @throws Exception\UserAlreadyExists
+     */
     public function registerUser(RegisterUserCommand $command): RegisterUserData
     {
         return new RegisterUserData(
@@ -44,6 +47,9 @@ final class CommandProcessor
         );
     }
 
+    /**
+     * @throws Exception\UserAlreadyExists
+     */
     private function createUser(string $email, string $password, array $roles = []): User
     {
         $user = User::create(Uuid::v4(), $email, []);

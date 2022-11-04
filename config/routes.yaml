@@ -1,4 +1,4 @@
-### TODO: Вынести в каждый неймспейс
+#TODO: сделать общую форму
 controllers:
     resource: ../src/User/Presentation/Api/V1/
     type: attribute
