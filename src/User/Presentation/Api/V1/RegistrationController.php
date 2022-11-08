@@ -36,7 +36,7 @@ class RegistrationController extends BaseController
             return $this->json(
                 $this->commandProcessor->registerUser($command, self::ROUTE_PREFIX . self::EMAIL_VERIFY_ROUTE)
             );
-        } catch (UserAlreadyExists $exception) {
+        } catch (DomainException $exception) {
             return $this->json($exception);
         }
     }
