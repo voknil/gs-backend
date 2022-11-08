@@ -14,6 +14,8 @@ use App\User\Domain\UserReadStorage;
 use App\User\Domain\UserWriteStorage;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Uuid;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelper;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 final class CommandProcessor
 {
@@ -21,6 +23,7 @@ final class CommandProcessor
         private readonly UserWriteStorage            $userWriteStorage,
         private readonly UserReadStorage             $userReadStorage,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly VerifyEmailHelperInterface  $verifyEmailHelper,
         private readonly MessageBuilder              $messageBuilder,
     )
     {
@@ -29,10 +32,18 @@ final class CommandProcessor
     /**
      * @throws Exception\UserAlreadyExists
      */
-    public function registerUser(RegisterUserCommand $command): RegisterUserData
+    public function registerUser(RegisterUserCommand $command, string $emailVerifyRoute): RegisterUserData
     {
+        $user = $this->createUser($command->getEmail(), $command->getPassword());
+
+        $signatureComponents = $this->verifyEmailHelper->generateSignature('user_'.$emailVerifyRoute,
+            (string) $user->getId(),
+            $user->getEmail());
+
+        $this->messageBuilder->sendRegisterMessage($user, $signatureComponents->getSignedUrl());
+
         return new RegisterUserData(
-            $this->createUser($command->getEmail(), $command->getPassword())
+            $user
         );
     }
 
@@ -59,8 +70,6 @@ final class CommandProcessor
         );
 
         $this->userWriteStorage->add($user);
-
-        $this->messageBuilder->sendRegisterMessage($user);
 
         return $user;
     }

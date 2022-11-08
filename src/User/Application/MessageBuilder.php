@@ -16,14 +16,14 @@ final class MessageBuilder
     {
     }
 
-    public function sendRegisterMessage(User $user): void
+    public function sendRegisterMessage(User $user, string $verifyEmailUrl): void
     {
         $email = (new Email())
             ->from('admin@example.com')
             ->to($user->getEmail())
             ->subject('Email confirmation')
-            ->text('Please confirm your email address by visiting this link: NO LINK YET')
-            ->html('<p>Please confirm your email address by visiting this <a href="#">NO LINK YET</a></p>');
+            ->text('Please confirm your email address by visiting this link: '.$verifyEmailUrl)
+            ->html('<p>Please confirm your email address by visiting this <a href="#">'.$verifyEmailUrl.'</a></p>');
 
         $this->mailer->send($email);
     }

@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: "/api/v1/user", name: "user_")]
 class UserController extends BaseController
 {
+    private const EMAIL_VERIFY_ROUTE = 'registration_confirmation_route';
+
     public function __construct(
         private readonly QueryProcessor   $queryProcessor,
         private readonly CommandProcessor $commandProcessor,
@@ -50,12 +52,20 @@ class UserController extends BaseController
     {
         try {
             return $this->json(
-                $this->commandProcessor->registerUser($command)
+                $this->commandProcessor->registerUser($command, self::EMAIL_VERIFY_ROUTE)
             );
         } catch (UserAlreadyExists $exception) {
             return $this->json($exception);
         }
     }
+
+    #[Route('/verify', name: self::EMAIL_VERIFY_ROUTE, methods: ['POST'])]
+    public function verifyUserEmail(Request $request): JsonResponse
+    {
+
+        return $this->json(['hello' => 1]);
+    }
+
 
     #[Route('/recover-password', name: 'recover_password', methods: ['POST'])]
     #[OA\Response(
