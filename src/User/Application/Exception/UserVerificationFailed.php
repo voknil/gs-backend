@@ -7,10 +7,10 @@ namespace App\User\Application\Exception;
 use App\Core\Application\DomainException;
 use Throwable;
 
-final class UserAlreadyExists extends DomainException
+final class UserVerificationFailed extends DomainException
 {
     public function __construct(int $code = 0, ?Throwable $previous = null)
     {
-        parent::__construct("User already exists", $code, $previous);
+        parent::__construct("User verification failed", $code, $previous);
     }
 }

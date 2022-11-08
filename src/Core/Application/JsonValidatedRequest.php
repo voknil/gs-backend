@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-abstract class BaseRequest
+abstract class JsonValidatedRequest
 {
     public function __construct(
         protected readonly ValidatorInterface $validator
@@ -20,24 +20,6 @@ abstract class BaseRequest
         if ($this->autoValidateRequest()) {
             $this->validate();
         }
-    }
-
-    public function validate(): void
-    {
-        $errors = $this->validator->validate($this);
-
-        $validationResponse = new ValidationErrorList($errors);
-
-        if ($validationResponse->hasErrors()) {
-            $this->sendResponse(
-                $validationResponse->getContent()
-            );
-        }
-    }
-
-    public function getRequest(): Request
-    {
-        return Request::createFromGlobals();
     }
 
     protected function populate(): void
@@ -55,9 +37,9 @@ abstract class BaseRequest
         }
     }
 
-    protected function autoValidateRequest(): bool
+    public function getRequest(): Request
     {
-        return true;
+        return Request::createFromGlobals();
     }
 
     #[NoReturn]
@@ -67,5 +49,23 @@ abstract class BaseRequest
         $response->send();
 
         exit;
+    }
+
+    protected function autoValidateRequest(): bool
+    {
+        return true;
+    }
+
+    public function validate(): void
+    {
+        $errors = $this->validator->validate($this);
+
+        $validationResponse = new ValidationErrorList($errors);
+
+        if ($validationResponse->hasErrors()) {
+            $this->sendResponse(
+                $validationResponse->getContent()
+            );
+        }
     }
 }

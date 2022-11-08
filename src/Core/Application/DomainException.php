@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Core\Application;
 
-abstract class DomainException extends \Exception
+use Exception;
+
+abstract class DomainException extends Exception
 {
     public function getContent(): array
     {

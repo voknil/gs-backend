@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\User\Application\Command;
 
-use App\Core\Application\BaseRequest;
+use App\Core\Application\JsonValidatedRequest;
 use App\User\Domain\Command\RegisterUserCommand;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-final class RegisterUser extends BaseRequest implements RegisterUserCommand
+final class RegisterUser extends JsonValidatedRequest implements RegisterUserCommand
 {
     #[Assert\Email]
     #[Assert\NotBlank]
