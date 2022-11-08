@@ -7,12 +7,12 @@ Content-Type: application/json
 
 ### register
 
-POST {{host}}/api/v1/user/register
+POST {{host}}/api/v1/registration/register
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 
 {
-  "email": "newuser1@test.com",
+  "email": "newuser11@test.com",
   "password": "Test1234"
 }
 

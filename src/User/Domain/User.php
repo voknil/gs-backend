@@ -4,12 +4,14 @@ namespace App\User\Domain;
 
 use App\User\Infrastructure\Persistence\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -30,6 +32,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isVerified = false;
+
+    /**
+     * @param array<string> $roles
+     */
+    public static function create(Uuid $id, string $email, array $roles): self
+    {
+        $user = new self();
+        $user->id = $id;
+        $user->email = $email;
+        $user->roles = self::getRolesWithDefault($roles);
+
+        return $user;
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -42,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -51,6 +69,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         return $this->getRolesWithDefault($this->roles);
+    }
+
+    private static function getRolesWithDefault(array $roles = []): array
+    {
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     /**
@@ -82,23 +107,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         //TODO: Выкидывать событие и слушать
     }
 
-    /**
-     * @param array<string> $roles
-     */
-    public static function create(Uuid $id, string $email, array $roles): self
+    public function isVerified(): bool
     {
-        $user = new self();
-        $user->id = $id;
-        $user->email = $email;
-        $user->roles = self::getRolesWithDefault($roles);
-
-        return $user;
+        return $this->isVerified;
     }
 
-    private static function getRolesWithDefault(array $roles = []): array
+    public function setIsVerified(bool $isVerified): self
     {
-        $roles[] = 'ROLE_USER';
+        $this->isVerified = $isVerified;
 
-        return array_unique($roles);
+        return $this;
     }
 }

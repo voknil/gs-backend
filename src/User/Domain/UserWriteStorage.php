@@ -12,4 +12,6 @@ interface UserWriteStorage
      * @throws UserAlreadyExists
      */
     public function add(User $user): void;
+
+    public function save(User $user, bool $flush = false): void;
 }

@@ -20,8 +20,9 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
                 require_previous_session: false
 
+        ##TODO: Вынести публичные адрес
         api:
-            pattern: ^/api/v1(?!(/doc.json|/user/register)$)
+            pattern: ^/api/v1(?!(/doc.json|/registration/register|/registration/verify)$)
             stateless: true
             provider: app_user_provider
             jwt: ~
@@ -40,7 +41,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/login_check,                roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
-        - { path: ^/api/v1/user/register,           roles: [ PUBLIC_ACCESS ] } ### TODO: Вынести все паблик методы
+        - { path: ^/api/v1/registration,            roles: [ PUBLIC_ACCESS ] } ### TODO: Вынести все паблик методы
         - { path: ^/api/v1/user/recover-password,   roles: [ PUBLIC_ACCESS ] }
         - { path: ^/api/v1/doc.json,                roles: [ PUBLIC_ACCESS ]}
         - { path: ^/api/v1,                         roles: [ IS_AUTHENTICATED_FULLY ] }

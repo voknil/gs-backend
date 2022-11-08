@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\User\Application\Command;
 
-use App\User\Domain\Command\GetUserProfileCommand;
 use App\User\Domain\Command\RecoverPasswordCommand;
-use App\User\Domain\Command\RegisterUserCommand;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
