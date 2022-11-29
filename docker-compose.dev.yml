@@ -1,0 +1,61 @@
+version: "3.4"
+
+# Development environment override
+services:
+  php:
+    env_file:
+      - .env
+      - .env.dev
+      - .env.dev.local
+  
+  message_consumer:
+    env_file:
+      - .env
+      - .env.dev
+      - .env.dev.local
+
+  caddy:
+    env_file:
+      - .env
+      - .env.dev
+      - .env.dev.local
+
+###> doctrine/doctrine-bundle ###
+  database:
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+      - .env.dev
+      - .env.dev.local
+###< doctrine/doctrine-bundle ###
+  
+###> symfony/mailer ###
+  mailer:
+    image: schickling/mailcatcher
+    container_name: gs_mailer
+    ports:
+      - "1080:1080"
+    env_file:
+      - .env
+      - .env.dev
+      - .env.dev.local
+    networks:
+      - gs
+###< symfony/mailer ###
+
+  rabbitmq:
+    env_file:
+      - .env
+      - .env.dev
+      - .env.dev.local
+  
+  swagger_ui:
+    image: swaggerapi/swagger-ui
+    container_name: gs_swagger
+    networks:
+      - gs
+    env_file:
+      - .env
+      - .env.dev
+      - .env.dev.local

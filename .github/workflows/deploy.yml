@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - 'master'
+    tags:
+      - 'v*'
+
+jobs:
+  dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Deploy to host
+        uses: voknil/docker-deployment-action@v1.1
+        with:
+          remote_docker_host: ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}
+          ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+          copy_stack_file: true
+          stack_file_name: docker-compose.yml
+          deploy_path: /opt/goodsurfing/backend/deployment
+          args: -f /opt/goodsurfing/backend/deployment/docker-compose.dev.yml up --build -d
+          pre_deployment_command_args: cd /opt/goodsurfing/backend/deployment/ && git fetch && git reset --hard origin/master

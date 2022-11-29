@@ -1,0 +1,117 @@
+version: "3.4"
+
+x-template: &template
+  build:
+    context: .
+    target: app_php
+    args:
+      SYMFONY_VERSION: ${SYMFONY_VERSION:-}
+      STABILITY: ${STABILITY:-stable}
+  volumes:
+    - php_socket:/var/run/php
+  healthcheck:
+    interval: 10s
+    timeout: 3s
+    retries: 6
+    start_period: 30s
+  environment:
+    # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
+    MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
+    MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
+    MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+  networks:
+    - gs
+
+services:
+  php:
+    <<: *template
+    container_name: gs_php
+    restart: unless-stopped
+    
+  message_consumer:
+    <<: *template
+    environment:
+      - APP_NAME=message_consumer
+    command: bin/console messenger:consume async -vv
+    depends_on:
+      - php
+      - rabbitmq
+    container_name: gs_message_consumer
+    restart: unless-stopped
+
+  caddy:
+    build:
+      context: .
+      target: app_caddy
+    container_name: gs_caddy
+    depends_on:
+      - php
+    environment:
+      MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+    restart: unless-stopped
+    volumes:
+      - php_socket:/var/run/php
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      # HTTP
+      - target: 80
+        published: ${HTTP_PORT:-80}
+        protocol: tcp
+      # HTTPS
+      - target: 443
+        published: ${HTTPS_PORT:-443}
+        protocol: tcp
+      # HTTP/3
+      - target: 443
+        published: ${HTTP3_PORT:-443}
+        protocol: udp
+    networks:
+      - gs
+
+# Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
+###> symfony/mercure-bundle ###
+###< symfony/mercure-bundle ###
+
+###> doctrine/doctrine-bundle ###
+  database:
+    image: postgres:${POSTGRES_VERSION:-14}-alpine
+    container_name: gs_db
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+    networks:
+      - gs
+###< doctrine/doctrine-bundle ###
+
+  rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION:-3.11.2}-alpine
+    container_name: gs_rabbitmq
+    depends_on:
+      - php
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-log:/var/log/rabbitmq
+    networks:
+      - gs
+
+volumes:
+  php_socket:
+  caddy_data:
+  caddy_config:
+###> symfony/mercure-bundle ###
+###< symfony/mercure-bundle ###
+
+###> doctrine/doctrine-bundle ###
+  db-data:
+###< doctrine/doctrine-bundle ###
+
+  rabbitmq-data:
+  rabbitmq-log:
+
+networks:
+  gs:
+    name: proxy
+    external: true

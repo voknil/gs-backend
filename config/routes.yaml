@@ -1,0 +1,7 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+    prefix: /api/v1
+    
+api_login_check:
+    path: /api/v1/public/login_check

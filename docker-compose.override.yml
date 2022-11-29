@@ -1,0 +1,72 @@
+version: "3.4"
+
+# Development environment override
+services:
+  php:
+    build:
+      target: app_php_dev
+    volumes:
+      - ./:/srv/app
+      - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+      # If you develop on Mac or Windows you can remove the vendor/ directory
+      #  from the bind-mount for better performance by enabling the next line:
+      #- /srv/app/vendor
+    env_file:
+      - .env
+      - .env.local
+    extra_hosts:
+      # Ensure that host.docker.internal is correctly defined on Linux
+      - host.docker.internal:host-gateway
+  
+  message_consumer:
+    env_file:
+      - .env
+      - .env.local
+
+  caddy:
+    volumes:
+      - ./public:/srv/app/public:ro
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+    env_file:
+      - .env
+      - .env.local
+
+###> symfony/mercure-bundle ###
+###< symfony/mercure-bundle ###
+
+###> doctrine/doctrine-bundle ###
+  database:
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+      - .env.local
+###< doctrine/doctrine-bundle ###
+  
+###> symfony/mailer ###
+  mailer:
+    image: schickling/mailcatcher
+    container_name: gs_mailer
+    ports:
+      - "1080:1080"
+    env_file:
+      - .env
+      - .env.local
+    networks:
+      - gs
+###< symfony/mailer ###
+
+  rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION:-3.11.2-management}-alpine
+    env_file:
+      - .env
+      - .env.local
+  
+  swagger_ui:
+    image: swaggerapi/swagger-ui
+    container_name: gs_swagger
+    networks:
+      - gs
+    env_file:
+      - .env
+      - .env.local

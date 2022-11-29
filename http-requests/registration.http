@@ -1,0 +1,10 @@
+### register
+
+POST {{host}}/api/v1/public/register/
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+
+{
+    "email": "new341@test.com",
+    "password": "Test1234"
+}
