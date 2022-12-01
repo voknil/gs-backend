@@ -45,6 +45,7 @@ services:
 ###< symfony/mailer ###
 
   rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION:-3.11.2-management}-alpine
     env_file:
       - .env
       - .env.dev
