@@ -3,37 +3,61 @@
     {$CADDY_DEBUG}
 }
 
-{$SERVER_NAME}
+{$SERVER_NAME} {
 
-log
+    log
 
-handle_path /api/doc/* {
-    reverse_proxy gs_swagger:8080
-}
-
-handle_path /rabbit/* {
-    reverse_proxy gs_rabbitmq:15672
-}
-
-route {
-    root * /srv/app/public
-    mercure {
-        # Transport to use (default to Bolt)
-        transport_url {$MERCURE_TRANSPORT_URL:bolt:///data/mercure.db}
-        # Publisher JWT key
-        publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} {env.MERCURE_PUBLISHER_JWT_ALG}
-        # Subscriber JWT key
-        subscriber_jwt {env.MERCURE_SUBSCRIBER_JWT_KEY} {env.MERCURE_SUBSCRIBER_JWT_ALG}
-        # Allow anonymous subscribers (double-check that it's what you want)
-        anonymous
-        # Enable the subscription API (double-check that it's what you want)
-        subscriptions
-        # Extra directives
-        {$MERCURE_EXTRA_DIRECTIVES}
+    handle_path /api/doc/* {
+        reverse_proxy gs_swagger:8080
     }
-    vulcain
-    push
-    php_fastcgi unix//var/run/php/php-fpm.sock
-    encode zstd gzip
-    file_server
+
+    handle_path /rabbit/* {
+        reverse_proxy gs_rabbitmq:15672
+    }
+
+    route {
+        vulcain
+        push
+
+        reverse_proxy gs_frontend:80
+    }
+
+    route /api/* {
+        root * /srv/app/public
+
+        # TODO: check if vulcain and push needed here
+        vulcain
+        push
+
+        php_fastcgi unix//var/run/php/php-fpm.sock
+        encode zstd gzip
+        file_server
+    }
+
+    route /.well-known/mercure {
+        # TODO: check mercure hub correctly
+        root * /srv/app/public
+
+        mercure {
+                # Transport to use (default to Bolt)
+                transport_url {$MERCURE_TRANSPORT_URL:bolt:///data/mercure.db}
+                # Publisher JWT key
+                publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} {env.MERCURE_PUBLISHER_JWT_ALG}
+                # Subscriber JWT key
+                subscriber_jwt {env.MERCURE_SUBSCRIBER_JWT_KEY} {env.MERCURE_SUBSCRIBER_JWT_ALG}
+                # Allow anonymous subscribers (double-check that it's what you want)
+                anonymous
+                # Enable the subscription API (double-check that it's what you want)
+                subscriptions
+                # Extra directives
+                {$MERCURE_EXTRA_DIRECTIVES}
+            }
+
+        vulcain
+        push
+
+        php_fastcgi unix//var/run/php/php-fpm.sock
+        encode zstd gzip
+        file_server
+    }
 }
