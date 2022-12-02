@@ -8,10 +8,16 @@
     log
 
     handle_path /api/doc/* {
+        basicauth {
+        	{$CADDY_BASIC_AUTH_LOGIN} {$CADDY_BASIC_AUTH_TOKEN}
+        }
         reverse_proxy gs_swagger:8080
     }
 
     handle_path /rabbit/* {
+        basicauth {
+            {$CADDY_BASIC_AUTH_LOGIN} {$CADDY_BASIC_AUTH_TOKEN}
+        }
         reverse_proxy gs_rabbitmq:15672
     }
 
