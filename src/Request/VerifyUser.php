@@ -13,13 +13,13 @@ final class VerifyUser
         return $this->getRequest()->query->get('id');
     }
 
-    public function getUri(): string
-    {
-        return $this->getRequest()->getUri();
-    }
-
     private function getRequest(): Request
     {
         return Request::createFromGlobals();
+    }
+
+    public function getUri(): string
+    {
+        return $this->getRequest()->getUri();
     }
 }

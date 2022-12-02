@@ -44,14 +44,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andWhere('u.email = :email')
             ->setParameter('email', $email)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     /**
      * @throws UserAlreadyExists
      */
-    public function add(User $entity) {
+    public function add(User $entity)
+    {
         try {
             $this->save($entity, true);
         } catch (UniqueConstraintViolationException $exception) {

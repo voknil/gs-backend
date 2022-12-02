@@ -18,9 +18,9 @@ use Throwable;
 final class Registrar implements RegistrarInterface
 {
     public function __construct(
-        private readonly UserRepository                 $userStorage,
-        private readonly UserPasswordHasherInterface    $userPasswordHasher,
-        private readonly EmailVerifier                  $emailVerifier,
+        private readonly UserRepository              $userStorage,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly EmailVerifier               $emailVerifier,
     )
     {
     }
@@ -40,9 +40,9 @@ final class Registrar implements RegistrarInterface
     /**
      * @throws UserAlreadyExists
      */
-    private function createUser(string $email, string $password): User
+    private function createUser(string $email, string $password, string $locale): User
     {
-        $user = User::create(Uuid::v4(), $email);
+        $user = User::create(Uuid::v4(), $email, $locale);
 
         $user->setPassword(
             $this->hashPassword($user, $password)
@@ -51,6 +51,11 @@ final class Registrar implements RegistrarInterface
         $this->userStorage->add($user);
 
         return $user;
+    }
+
+    private function hashPassword(User $user, string $plainTextPassword): string
+    {
+        return $this->userPasswordHasher->hashPassword($user, $plainTextPassword);
     }
 
     /**
@@ -83,10 +88,5 @@ final class Registrar implements RegistrarInterface
         }
 
         return $user;
-    }
-
-    private function hashPassword(User $user, string $plainTextPassword): string
-    {
-        return $this->userPasswordHasher->hashPassword($user, $plainTextPassword);
     }
 }

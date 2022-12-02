@@ -4,7 +4,7 @@ POST {{host}}/api/v1/public/login_check
 Content-Type: application/json
 
 {
-  "username": "newuser@test.com",
+  "username": "admin@test.com",
   "password": "Test1234"
 }
 

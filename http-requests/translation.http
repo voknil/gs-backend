@@ -1,0 +1,11 @@
+### set-locale
+
+## ru | en | es
+PUT {{host}}/api/v1/translation/set-locale
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "locale": "en"
+}

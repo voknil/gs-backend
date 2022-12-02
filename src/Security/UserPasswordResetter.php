@@ -65,6 +65,20 @@ final class UserPasswordResetter implements UserPasswordResetterInterface
         }
     }
 
+    /**
+     * @throws UserNotFound
+     */
+    private function getUserByEmail(string $email): User
+    {
+        $user = $this->userRepository->getByEmail($email);
+
+        if (null === $user) {
+            throw new UserNotFound();
+        }
+
+        return $user;
+    }
+
     public function reset(Reset $request): \App\Response\UserPasswordReset\Reset
     {
         try {
@@ -95,19 +109,5 @@ final class UserPasswordResetter implements UserPasswordResetterInterface
         }
 
         return new \App\Response\UserPasswordReset\Reset();
-    }
-
-    /**
-     * @throws UserNotFound
-     */
-    private function getUserByEmail(string $email): User
-    {
-        $user = $this->userRepository->getByEmail($email);
-
-        if (null === $user) {
-            throw new UserNotFound();
-        }
-
-        return $user;
     }
 }
