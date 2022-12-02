@@ -9,3 +9,11 @@ Authorization: Bearer {{auth_token}}
 {
     "locale": "en"
 }
+
+### profile | get
+
+GET {{host}}/api/v1/user/profile/
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
