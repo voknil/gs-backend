@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.supported_locales: ['ru', 'en', 'es']
 
 services:
     # default configuration for services in *this* file
@@ -13,6 +14,7 @@ services:
         bind:
             $emailFromAddress: '%env(resolve:EMAIL_FROM_ADDRESS)%'
             $emailFromName: '%env(resolve:EMAIL_FROM_NAME)%'
+            $availableLocales: '%app.supported_locales%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

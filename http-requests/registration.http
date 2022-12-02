@@ -5,6 +5,7 @@ Accept: application/json, text/plain, */*
 Content-Type: application/json
 
 {
-    "email": "new341@test.com",
-    "password": "Test1234"
+    "email": "admin@test.com",
+    "password": "Test1234",
+    "locale": "ru"
 }

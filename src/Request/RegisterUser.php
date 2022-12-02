@@ -16,6 +16,9 @@ final class RegisterUser extends JsonValidatedRequest
     #[Assert\NotBlank]
     protected ?string $password;
 
+    #[Assert\NotBlank]
+    protected ?string $locale;
+
     public function getEmail(): string
     {
         return $this->email;
@@ -24,5 +27,10 @@ final class RegisterUser extends JsonValidatedRequest
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
     }
 }

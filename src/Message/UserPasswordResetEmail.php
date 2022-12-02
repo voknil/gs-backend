@@ -10,7 +10,7 @@ class UserPasswordResetEmail
 {
     public function __construct(
         private readonly ResetPasswordToken $resetPasswordToken,
-        private readonly string $emailTo,
+        private readonly string             $emailTo,
     )
     {
     }

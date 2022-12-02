@@ -34,6 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean', nullable: false)]
     private bool $isVerified = false;
 
+    #[ORM\Column(type: 'string', length: 6, nullable: false)]
+    private string $locale = 'ru';
+
     public static function create(Uuid $id, string $email): self
     {
         $user = new self();
@@ -122,6 +125,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->isVerified = $isVerified;
 
+        return $this;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
         return $this;
     }
 }
