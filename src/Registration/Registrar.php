@@ -30,7 +30,7 @@ final class Registrar implements RegistrarInterface
      */
     public function registerUser(RegisterUser $request): \App\Response\RegisterUser
     {
-        $user = $this->createUser($request->getEmail(), $request->getPassword());
+        $user = $this->createUser($request->getEmail(), $request->getPassword(), $request->getLocale());
 
         $this->emailVerifier->sendEmailConfirmation($user);
 

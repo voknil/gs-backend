@@ -28,4 +28,9 @@ final class RegisterUser extends JsonValidatedRequest
     {
         return $this->password;
     }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
 }

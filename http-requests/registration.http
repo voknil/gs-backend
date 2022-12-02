@@ -6,5 +6,6 @@ Content-Type: application/json
 
 {
     "email": "admin@test.com",
-    "password": "Test1234"
+    "password": "Test1234",
+    "locale": "ru"
 }
