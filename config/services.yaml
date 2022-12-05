@@ -15,6 +15,7 @@ services:
             $emailFromAddress: '%env(resolve:EMAIL_FROM_ADDRESS)%'
             $emailFromName: '%env(resolve:EMAIL_FROM_NAME)%'
             $availableLocales: '%app.supported_locales%'
+            $serverName: '%env(resolve:SERVER_NAME)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
