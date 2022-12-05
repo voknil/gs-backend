@@ -8,23 +8,25 @@ use App\Validation\ValidationErrorList;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class JsonValidatedRequest
 {
     public function __construct(
-        protected readonly ValidatorInterface $validator
+        protected readonly ValidatorInterface  $validator,
+        protected readonly TranslatorInterface $translator,
     )
     {
-        $this->populate();
+        $this->populate($this->getRequest()->getContent());
 
         if ($this->autoValidateRequest()) {
-            $this->validate();
+            $this->validate($this->getRequest()->getLocale());
         }
     }
 
-    protected function populate(): void
+    protected function populate(mixed $rawContent): void
     {
-        $content = json_decode($this->getRequest()->getContent());
+        $content = json_decode($rawContent);
 
         if (null === $content) {
             $this->sendResponse(['message' => 'Invalid json provided']);
@@ -55,11 +57,11 @@ abstract class JsonValidatedRequest
         return true;
     }
 
-    public function validate(): void
+    public function validate(string $locale): void
     {
         $errors = $this->validator->validate($this);
 
-        $validationResponse = new ValidationErrorList($errors);
+        $validationResponse = new ValidationErrorList($errors, $this->translator, $locale);
 
         if ($validationResponse->hasErrors()) {
             $this->sendResponse(
