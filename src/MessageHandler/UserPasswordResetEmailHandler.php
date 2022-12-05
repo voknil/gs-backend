@@ -15,7 +15,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 class UserPasswordResetEmailHandler
 {
     private const URL_SCHEMA = 'https';
-    private const RESET_PASSWORD_VERIFY = '/reset-password-verify';
+    private const RESET_PASSWORD_VERIFY = 'reset-password-verify';
 
     public function __construct(
         private readonly MailerInterface $mailer,
