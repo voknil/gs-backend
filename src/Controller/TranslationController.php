@@ -34,7 +34,8 @@ class TranslationController extends AbstractController
     public function setUserLocale(SetUserLocale $request): Response
     {
         try {
-            return $this->json($this->userProfiler->updateUserLocale($request));
+            $this->userProfiler->updateUserLocale($request);
+            return new Response();
         } catch (UserLocaleNotSet $exception) {
             return $this->json($exception);
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Validation;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ValidationErrorList
 {
@@ -16,14 +17,20 @@ class ValidationErrorList
     private array $errorList = [];
 
     public function __construct(
-        ConstraintViolationListInterface $constraintViolationList
+        ConstraintViolationListInterface     $constraintViolationList,
+        private readonly TranslatorInterface $translator,
+        private readonly string              $locale,
     )
     {
         foreach ($constraintViolationList as $message) {
             $this->errorList[] = [
                 'property' => $message->getPropertyPath(),
                 'value' => $message->getInvalidValue(),
-                'message' => $message->getMessage(),
+                'message' => $this->translator->trans(
+                    id: $message->getMessage(),
+                    domain: 'validators',
+                    locale: $this->locale
+                ),
                 'code' => $message->getCode(),
             ];
         }
