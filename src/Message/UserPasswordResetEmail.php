@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Message;
 
+use App\MessageHandler\UserPasswordResetEmailHandler;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
+/** @see UserPasswordResetEmailHandler */
 class UserPasswordResetEmail
 {
     public function __construct(
