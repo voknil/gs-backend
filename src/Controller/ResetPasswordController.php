@@ -21,9 +21,17 @@ class ResetPasswordController extends AbstractController
     }
 
     #[Route('request', name: 'app_forgot_password_request', methods: ['POST'])]
+    #[OA\Tag(name: 'user')]
     #[OA\Response(
         response: 200,
         description: 'Reset password request'
+    )]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(type: "object",
+            example:'{
+              "email": "newuser5@test.com"
+            }'
+        )
     )]
     public function request(Request $request): JsonResponse
     {
