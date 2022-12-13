@@ -7,6 +7,8 @@ use App\Exception\UserVerificationFailed;
 use App\Registration\RegistrarInterface;
 use App\Request\RegisterUser;
 use App\Request\VerifyUser;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,6 +23,20 @@ class RegistrationController extends BaseController
     }
 
     #[Route('/', name: 'app_register', methods: ['POST'])]
+    #[OA\Tag(name: 'user')]
+    #[OA\Response(
+        response: 200,
+        description: 'The user is registered successfully'
+    )]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(type: "object",
+            example:'{
+              "email": "newuser5@test.com",
+              "password": "Test1234",
+              "locale": "ru"
+            }'
+        )
+    )]
     public function registerUser(RegisterUser $request): JsonResponse
     {
         try {
