@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Request\UserPasswordReset\Request;
 use App\Request\UserPasswordReset\Reset;
 use App\Security\UserPasswordResetterInterface;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +25,11 @@ class ResetPasswordController extends AbstractController
     #[OA\Tag(name: 'user')]
     #[OA\Response(
         response: 200,
-        description: 'Reset password request'
+        description: 'Reset password successfully'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Email not fond'
     )]
     #[OA\RequestBody(
         content: new OA\JsonContent(type: "object",
@@ -47,6 +52,17 @@ class ResetPasswordController extends AbstractController
     #[OA\Response(
         response: 200,
         description: 'Reset password with token'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Email not fond'
+    )]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(type: "object",
+            example:'{
+              "email": "newuser5@test.com"
+            }'
+        )
     )]
     public function reset(Reset $request): Response
     {

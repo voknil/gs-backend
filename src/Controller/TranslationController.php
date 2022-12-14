@@ -31,6 +31,17 @@ class TranslationController extends AbstractController
         response: 200,
         description: 'User locale set successfully'
     )]
+    #[OA\Response(
+        response: 400,
+        description: 'User locale not set'
+    )]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(type: "object",
+            example:'{
+              "local": "en"
+            }'
+        )
+    )]
     public function setUserLocale(SetUserLocale $request): Response
     {
         try {

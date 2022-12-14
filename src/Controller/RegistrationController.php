@@ -28,6 +28,10 @@ class RegistrationController extends BaseController
         response: 200,
         description: 'The user is registered successfully'
     )]
+    #[OA\Response(
+        response: 400,
+        description: 'User already exists'
+    )]
     #[OA\RequestBody(
         content: new OA\JsonContent(type: "object",
             example:'{
@@ -49,6 +53,21 @@ class RegistrationController extends BaseController
     }
 
     #[Route('/verify', name: 'app_register_verify', methods: ['GET'])]
+    #[OA\Tag(name: 'user')]
+    #[OA\Response(
+        response: 200,
+        description: 'User verification successfully'
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'User verification failed'
+    )]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'query',
+        description: 'Verification code',
+        schema: new OA\Schema(type: 'string')
+    )]
     public function verifyUserEmail(VerifyUser $request): Response
     {
         try {
