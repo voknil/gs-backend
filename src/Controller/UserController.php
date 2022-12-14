@@ -33,6 +33,10 @@ class UserController extends AbstractController
         response: 200,
         description: 'Got user profile'
     )]
+    #[OA\Response(
+        response: 404,
+        description: 'User not found'
+    )]
     public function getCurrentUserProfile(GetCurrentUserProfile $request): JsonResponse
     {
         return $this->json(
