@@ -8,16 +8,16 @@ use Aws\Exception\MultipartUploadException;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\MultipartUploader;
 use Aws\S3\ObjectUploader;
-use Aws\S3\S3ClientInterface;
+use Aws\S3\S3Client;
 use Psr\Log\LoggerInterface;
 
 final class Bucket
 {
     public function __construct(
-        private readonly S3ClientInterface $s3Client,
-        private readonly LoggerInterface   $logger,
-        private readonly string            $s3BucketName,
-        private readonly string            $s3BucketTtl,
+        private readonly S3Client        $s3Client,
+        private readonly LoggerInterface $logger,
+        private readonly string          $s3BucketName,
+        private readonly string          $s3BucketTtl,
     )
     {
     }
