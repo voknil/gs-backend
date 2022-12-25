@@ -6,9 +6,11 @@ namespace App\User;
 
 use App\Entity\User;
 use App\Exception\UserLocaleNotSet;
+use App\Exception\UserNotUpdated;
 use App\Persistence\Repository\UserRepository;
 use App\Request\Translation\SetUserLocale as SetUserLocaleRequest;
 use App\Request\User\GetCurrentUserProfile as GetUserProfileRequest;
+use App\Request\User\UpdateCurrentUserProfile;
 use App\Response\Translation\SetUserLocale as SetUserLocaleResponse;
 use App\Response\User\GetCurrentUserProfile as GetUserProfileResponse;
 use Exception;
@@ -43,6 +45,30 @@ final class UserProfiler
         }
     }
 
+    public function getCurrentUserProfile(GetUserProfileRequest $request): GetUserProfileResponse
+    {
+        return new GetUserProfileResponse(
+            $this->getCurrentUser()
+        );
+    }
+
+    /**
+     * @throws UserNotUpdated
+     */
+    public function updateCurrentUserProfile(UpdateCurrentUserProfile $request): GetUserProfileResponse
+    {
+        $user = $this->getCurrentUser();
+
+        try {
+            $user->update($request);
+            $this->userRepository->save($user, true);
+        } catch (Exception $exception) {
+            throw new UserNotUpdated(previous: $exception);
+        }
+
+        return new GetUserProfileResponse($user);
+    }
+
     private function getCurrentUser(): ?User
     {
         $user = $this->security->getUser();
@@ -56,12 +82,5 @@ final class UserProfiler
         }
 
         return $user;
-    }
-
-    public function getCurrentUserProfile(GetUserProfileRequest $request): GetUserProfileResponse
-    {
-        return new GetUserProfileResponse(
-            $this->getCurrentUser()
-        );
     }
 }

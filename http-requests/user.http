@@ -17,3 +17,15 @@ Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
+### profile | update
+
+PUT {{host}}/api/v1/user/profile/
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "lastName": "test",
+    "birthDate": "2022-12-25"
+}
+

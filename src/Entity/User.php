@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Message\UserPasswordResetRequest;
 use App\Persistence\Repository\UserRepository;
+use App\User\Command\UpdateUser;
+use App\User\Enum\Gender;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -37,13 +39,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 6, nullable: false)]
     private string $locale = 'ru';
 
-    public static function create(Uuid $id, string $email): self
+    #[ORM\Column(type: 'string', length: '255', nullable: true)]
+    private ?string $firstName;
+
+    #[ORM\Column(type: 'string', length: '255', nullable: true)]
+    private ?string $lastName;
+
+    #[ORM\Column(type: 'gender', length: '32', nullable: true)]
+    private ?Gender $gender;
+
+    #[ORM\Column(type: 'datetimetz_immutable', nullable: true)]
+    private ?DateTimeImmutable $birthDate;
+
+    #[ORM\Column(type: 'uuid', nullable: true)]
+    private ?Uuid $imageUuid;
+
+    public static function create(Uuid $id, string $email): static
     {
-        $user = new self();
+        $user = new static();
         $user->id = $id;
         $user->email = $email;
 
         return $user;
+    }
+
+    public function update(UpdateUser $command): static
+    {
+        $this->firstName = $command->getFirstName();
+        $this->lastName = $command->getLastName();
+        $this->gender = $command->getGender();
+        $this->birthDate = $command->getBirthDate();
+        $this->imageUuid = $command->getImageUuid();
+
+        return $this;
     }
 
     public function getId(): ?Uuid
@@ -137,5 +165,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->locale = $locale;
         return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function getGender(): ?Gender
+    {
+        return $this->gender;
+    }
+
+    public function getBirthDate(): ?DateTimeImmutable
+    {
+        return $this->birthDate;
+    }
+
+    public function getImageUuid(): ?Uuid
+    {
+        return $this->imageUuid;
     }
 }

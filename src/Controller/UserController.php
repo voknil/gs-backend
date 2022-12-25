@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\DomainException;
 use App\Request\User\GetCurrentUserProfile;
+use App\Request\User\UpdateCurrentUserProfile;
 use App\User\UserProfiler;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
@@ -36,5 +38,17 @@ class UserController extends AbstractController
         return $this->json(
             $this->userProfiler->getCurrentUserProfile($request)
         );
+    }
+
+    #[Route('/user/profile/', name: 'app_user_profile_update', methods: ['PUT'])]
+    public function updateCurrentUserProfile(UpdateCurrentUserProfile $request): JsonResponse
+    {
+        try {
+            return $this->json(
+                $this->userProfiler->updateCurrentUserProfile($request)
+            );
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
     }
 }

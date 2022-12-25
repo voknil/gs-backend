@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Response\User;
 
 use App\Entity\User;
+use App\User\Enum\Gender;
+use DateTimeImmutable;
 
 final class GetCurrentUserProfile
 {
@@ -28,4 +30,29 @@ final class GetCurrentUserProfile
     {
         return $this->user->getEmail();
     }
+
+    public function getFirstName(): ?string
+    {
+        return $this->user->getFirstName();
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->user->getLastName();
+    }
+
+    public function getGender(): ?Gender
+    {
+        return $this->user->getGender();
+    }
+
+    public function getBirthDate(): ?DateTimeImmutable
+    {
+        return $this->user->getBirthDate();
+    }
+
+//    public function getImageUuid(): ?Uuid
+//    {
+//        return $this->user->getImageUuid();
+//    }
 }
