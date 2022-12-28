@@ -38,9 +38,9 @@ final class UpdateCurrentUserProfile extends JsonValidatedRequest implements Upd
         return $this->lastName;
     }
 
-    public function getGender(): ?string
+    public function getGender(): ?Gender
     {
-        return $this->gender;
+        return Gender::tryFrom($this->gender);
     }
 
     public function getBirthDate(): ?DateTimeImmutable
