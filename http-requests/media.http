@@ -6,5 +6,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "fileName": "test.pdf"
+    "fileName": "test.png"
 }
+
+> {% client.global.set("media_upload_url", response.body.url); %}

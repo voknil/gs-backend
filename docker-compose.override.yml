@@ -70,3 +70,36 @@ services:
     env_file:
       - .env
       - .env.local
+  
+  minio:
+    image: minio/minio
+    container_name: gs_minio
+    volumes:
+      - ./var/minio/data:/data
+      - ./var/minio/config:/root/.minio
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    environment:
+      MINIO_ACCESS_KEY: ${AWS_KEY}
+      MINIO_SECRET_KEY: ${AWS_SECRET}
+    command: server /data --console-address :9090
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  
+  create-buckets:
+    image: minio/mc
+    container_name: gs_create_bucket
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb myminio/dev;
+      /usr/bin/mc policy download myminio/dev;
+      exit 0;
+      "
+      
