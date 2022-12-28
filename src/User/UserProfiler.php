@@ -7,6 +7,7 @@ namespace App\User;
 use App\Entity\User;
 use App\Exception\UserLocaleNotSet;
 use App\Exception\UserNotUpdated;
+use App\Media\Storage\Storage;
 use App\Persistence\Repository\UserRepository;
 use App\Request\Translation\SetUserLocale as SetUserLocaleRequest;
 use App\Request\User\GetCurrentUserProfile as GetUserProfileRequest;
@@ -21,6 +22,7 @@ final class UserProfiler
     public function __construct(
         private readonly Security       $security,
         private readonly UserRepository $userRepository,
+        private readonly Storage        $mediaStorage,
     )
     {
     }
@@ -48,7 +50,8 @@ final class UserProfiler
     public function getCurrentUserProfile(GetUserProfileRequest $request): GetUserProfileResponse
     {
         return new GetUserProfileResponse(
-            $this->getCurrentUser()
+            $this->getCurrentUser(),
+            $this->mediaStorage
         );
     }
 
@@ -66,7 +69,7 @@ final class UserProfiler
             throw new UserNotUpdated(previous: $exception);
         }
 
-        return new GetUserProfileResponse($user);
+        return new GetUserProfileResponse($user, $this->mediaStorage);
     }
 
     private function getCurrentUser(): ?User

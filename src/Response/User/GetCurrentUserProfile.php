@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Response\User;
 
 use App\Entity\User;
+use App\Media\Storage\Storage;
+use App\Media\Storage\StorageFile;
 use App\User\Enum\Gender;
 use DateTimeImmutable;
 
 final class GetCurrentUserProfile
 {
     public function __construct(
-        private readonly User $user,
+        private readonly User    $user,
+        private readonly Storage $mediaStorage,
     )
     {
     }
@@ -51,8 +54,14 @@ final class GetCurrentUserProfile
         return $this->user->getBirthDate();
     }
 
-//    public function getImageUuid(): ?Uuid
-//    {
-//        return $this->user->getImageUuid();
-//    }
+    public function getImage(): ?StorageFile
+    {
+        $imageUuid = $this->user->getImageUuid();
+
+        if (null === $imageUuid) {
+            return null;
+        }
+
+        return $this->mediaStorage->getFileByUuid($imageUuid);
+    }
 }
