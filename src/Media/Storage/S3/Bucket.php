@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Media\Storage\S3;
 
+use App\Media\Storage\StorageFile;
 use Aws\Exception\MultipartUploadException;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\MultipartUploader;
 use Aws\S3\ObjectUploader;
 use Aws\S3\S3Client;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class Bucket
 {
@@ -65,6 +67,49 @@ final class Bucket
         } while (!isset($result));
     }
 
+    /**
+     * @param array<string, mixed> $options
+     * @throws S3Exception
+     */
+    public function getStorageFile(Uuid $uuid, ?string $name = null, array $options = []): ?StorageFile
+    {
+        $key = $this->findObjectKeyByName($uuid);
+        if (null === $key) {
+            return null;
+        }
+
+        $data = $this->s3Client->headObject([
+            'Bucket' => $this->s3BucketName,
+            'Key' => $key,
+        ]);
+
+        /** @var string|null $contentType */
+        $contentType = $data->get('ContentType');
+
+        $extension = $this->getExtensionByKeyOrContentType($key, $contentType);
+
+        $fileName = $name ?? (string)$uuid;
+        if (null !== $extension) {
+            $fileName .= '.' . $extension;
+        }
+
+        if (null !== $name) {
+            $options = array_merge($options, ['ResponseContentDisposition' => 'attachment; filename="' . $fileName . '"']);
+        }
+
+        /** @var array<string, mixed>|null $metadata */
+        $metadata = $data->get('@metadata');
+
+        return
+            new StorageFile(
+                $uuid,
+                $this->getPresignedUrl($key, $options),
+                $metadata['headers']['content-length'] ?? null,
+                $contentType,
+                $fileName
+            );
+    }
+
     public function getPreSignedUrl(string $key, array $options = []): string
     {
         $command =
@@ -78,7 +123,7 @@ final class Bucket
                     ]
                 )
             );
-        $request = $this->s3Client->createPresignedRequest($command, $this->$s3BucketTtl);
+        $request = $this->s3Client->createPresignedRequest($command, $this->s3BucketTtl);
 
         return (string)$request->getUri();
     }
@@ -89,5 +134,64 @@ final class Bucket
         $request = $this->s3Client->createPresignedRequest($command, $this->s3BucketTtl);
 
         return (string)$request->getUri();
+    }
+
+    private function findObjectKeyByName(string|Uuid $name): ?string
+    {
+        return $this->findObjectKeysByName($name, 1)[0] ?? null;
+    }
+
+    private function findObjectKeysByName(string|Uuid $name, int $limit = 100): array
+    {
+        /** @var array|null $objects */
+        $objects = $this->s3Client->execute(
+            $this->s3Client->getCommand(
+                'ListObjects',
+                [
+                    'Bucket' => $this->s3BucketName,
+                    'Prefix' => (string)$name,
+                    'MaxKeys' => $limit,
+                ]
+            )
+        );
+
+        return $objects['Contents'] ? array_map(static fn(array $object) => $object['Key'], $objects['Contents']) : [];
+    }
+
+    private function getExtensionByKeyOrContentType(string $key, ?string $contentType): ?string
+    {
+        $extension = $this->getExtensionByKey($key);
+        if (null !== $extension) {
+            return $extension;
+        }
+
+        if (null === $contentType) {
+            return null;
+        }
+
+        return $this->getExtensionByContentType($contentType);
+    }
+
+    private function getExtensionByKey(string $key): ?string
+    {
+        return pathinfo($key)['extension'] ?? null;
+    }
+
+    private function getExtensionByContentType(string $contentType): ?string
+    {
+        $map = [
+            'text/csv' => 'csv',
+            'application/msword' => 'doc',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+            'image/jpeg' => 'jpeg',
+            'image/png' => 'png',
+            'application/pdf' => 'pdf',
+            'application/rtf' => 'rtf',
+            'image/tiff' => 'tiff',
+            'application/vnd.ms-excel' => 'xls',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+        ];
+
+        return $map[$contentType] ?? null;
     }
 }
