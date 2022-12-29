@@ -27,6 +27,7 @@ Authorization: Bearer {{auth_token}}
 {
     "lastName": "test",
     "birthDate": "2022-12-25",
-    "gender": "male"
+    "gender": "male",
+    "imageUuid": "18bee1c3-7469-42fe-b7ae-1c88645d6232"
 }
 
