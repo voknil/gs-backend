@@ -80,6 +80,8 @@ services:
     ports:
       - "9000:9000"
       - "9090:9090"
+    networks:
+      - gs
     environment:
       MINIO_ACCESS_KEY: ${AWS_KEY}
       MINIO_SECRET_KEY: ${AWS_SECRET}
