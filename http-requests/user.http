@@ -17,3 +17,17 @@ Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
+### profile | update
+
+PUT {{host}}/api/v1/user/profile/
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "lastName": "test",
+    "birthDate": "2022-12-25",
+    "gender": "male",
+    "imageUuid": "18bee1c3-7469-42fe-b7ae-1c88645d6232"
+}
+

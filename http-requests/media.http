@@ -1,0 +1,12 @@
+### generate-upload-link
+
+POST {{host}}/api/v1/media/generate-upload-link
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "fileName": "test.png"
+}
+
+> {% client.global.set("media_upload_url", response.body.url); %}
