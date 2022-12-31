@@ -11,3 +11,10 @@ $ cd gs-backend
 $ touch .env.local
 $ docker-compose up --build -d
 ```
+
+## Local minio instance support.
+
+For unix system
+```shell
+$ cat '127.0.0.1 minio' >> /etc/hosts
+```
