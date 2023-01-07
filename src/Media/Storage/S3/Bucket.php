@@ -88,6 +88,7 @@ final class Bucket
     {
         $key = $this->findObjectKeyByName($uuid);
         if (null === $key) {
+            $this->logger->warning(sprintf('Unable to find file to S3 bucket by key "%s"', $uuid));
             return null;
         }
 
