@@ -15,6 +15,19 @@ use Symfony\Component\Uid\Uuid;
 
 final class Bucket
 {
+    private const TYPE_EXTENSION_MAP = [
+        'text/csv' => 'csv',
+        'application/msword' => 'doc',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+        'image/jpeg' => 'jpeg',
+        'image/png' => 'png',
+        'application/pdf' => 'pdf',
+        'application/rtf' => 'rtf',
+        'image/tiff' => 'tiff',
+        'application/vnd.ms-excel' => 'xls',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+    ];
+
     public function __construct(
         private readonly S3Client        $s3Client,
         private readonly LoggerInterface $logger,
@@ -136,6 +149,11 @@ final class Bucket
         return (string)$request->getUri();
     }
 
+    public function getContentTypeByKey(string $key): ?string
+    {
+        return $this->getContentTypeByExtension($this->getExtensionByKey($key));
+    }
+
     private function findObjectKeyByName(string|Uuid $name): ?string
     {
         return $this->findObjectKeysByName($name, 1)[0] ?? null;
@@ -179,19 +197,11 @@ final class Bucket
 
     private function getExtensionByContentType(string $contentType): ?string
     {
-        $map = [
-            'text/csv' => 'csv',
-            'application/msword' => 'doc',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
-            'image/jpeg' => 'jpeg',
-            'image/png' => 'png',
-            'application/pdf' => 'pdf',
-            'application/rtf' => 'rtf',
-            'image/tiff' => 'tiff',
-            'application/vnd.ms-excel' => 'xls',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
-        ];
+        return self::TYPE_EXTENSION_MAP[$contentType] ?? null;
+    }
 
-        return $map[$contentType] ?? null;
+    private function getContentTypeByExtension(string $extension): ?string
+    {
+        return array_flip(self::TYPE_EXTENSION_MAP)[$extension] ?? null;
     }
 }

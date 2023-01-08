@@ -13,5 +13,5 @@ interface UploadLink
 
     public function getUuid(): Uuid;
 
-    public function getType(): StorageType;
+    public function getContentType(): ?string;
 }
