@@ -30,7 +30,11 @@ final class Storage implements \App\Media\Storage\Storage
         );
 
         try {
-            return new UploadLink($uuid, $this->bucket->getUploadPreSignedUrl($key));
+            return new UploadLink(
+                $uuid,
+                $this->bucket->getUploadPreSignedUrl($key),
+                $this->bucket->getContentTypeByKey($key),
+            );
         } catch (\Throwable $exception) {
             throw new UploadException(previous: $exception);
         }

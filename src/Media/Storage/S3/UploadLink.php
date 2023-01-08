@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Media\Storage\S3;
 
-use App\Media\Storage\StorageType;
 use Symfony\Component\Uid\Uuid;
 
 final class UploadLink implements \App\Media\Storage\UploadLink
@@ -12,6 +11,7 @@ final class UploadLink implements \App\Media\Storage\UploadLink
     public function __construct(
         private readonly Uuid   $uuid,
         private readonly string $url,
+        private readonly string $contentType,
     )
     {
     }
@@ -26,8 +26,8 @@ final class UploadLink implements \App\Media\Storage\UploadLink
         return $this->uuid;
     }
 
-    public function getType(): StorageType
+    public function getContentType(): string
     {
-        return StorageType::S3;
+        return $this->contentType;
     }
 }

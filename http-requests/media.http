@@ -9,4 +9,17 @@ Authorization: Bearer {{auth_token}}
     "fileName": "test.png"
 }
 
-> {% client.global.set("media_upload_url", response.body.url); %}
+> {%
+client.global.set("media_upload_url", response.body.url);
+client.global.set("media_upload_content_type", response.body.contentType);
+%}
+
+### upload to generated link
+
+PUT {{media_upload_url}}
+Content-Type: {{media_upload_content_type}}
+
+< ../var/test.png
+
+###
+
