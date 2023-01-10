@@ -21,5 +21,9 @@ Content-Type: {{media_upload_content_type}}
 
 < ../var/test.png
 
-###
+### check cors
+
+OPTIONS {{media_upload_url}}
+Origin: http://gudsurfing.ru
+Access-Control-Request-Method: PUT
 
