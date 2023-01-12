@@ -1,0 +1,6 @@
+### organization | get
+
+GET {{host}}/api/v1/organization/{{organization_uuid}}
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
