@@ -9,7 +9,9 @@ Goodsurfing.org
 $ git clone git@github.com:voknil/gs-backend.git
 $ cd gs-backend
 $ touch .env.local
+$ docker network create proxy --driver=brigde
 $ docker-compose up --build -d
+$ docker-compose exec php bin/console lexik:jwt:generate-keypair
 ```
 
 ## Local minio instance support.
