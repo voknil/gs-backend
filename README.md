@@ -11,6 +11,7 @@ $ cd gs-backend
 $ touch .env.local
 $ docker network create proxy --driver=brigde
 $ docker-compose up --build -d
+$ docker-compose exec php bin/console lexik:jwt:generate-keypair
 ```
 
 ## Local minio instance support.
