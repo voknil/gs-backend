@@ -21,6 +21,16 @@ class Organization
     #[ORM\Column(type: 'text', unique: false, nullable: true)]
     private ?string $description;
 
+    public static function create(Uuid $id, string $name, ?string $description = null): static
+    {
+        $organization = new static();
+        $organization->id = $id;
+        $organization->name = $name;
+        $organization->description = $description;
+
+        return $organization;
+    }
+
     public function getId(): Uuid
     {
         return $this->id;

@@ -5,9 +5,10 @@ namespace App\Organization;
 use App\Exception\OrganizationNotFound;
 use App\Repository\OrganizationRepository;
 use App\Response\Organization\GetOrganization;
+use App\Response\Organization\ListOrganization;
 use Symfony\Component\Uid\Uuid;
 
-class QueryProcessor
+final class QueryProcessor
 {
     public function __construct(
         private readonly OrganizationRepository $organizationRepository,
@@ -29,5 +30,12 @@ class QueryProcessor
         return new GetOrganization(
             $organization
         );
+    }
+
+    public function getAll(): ListOrganization
+    {
+        $organizationList = $this->organizationRepository->findAll();
+
+        return new ListOrganization($organizationList);
     }
 }

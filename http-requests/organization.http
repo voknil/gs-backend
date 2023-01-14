@@ -1,6 +1,27 @@
+### organization | add
+
+POST {{host}}/api/v1/organization/
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "name": "Test Organization",
+    "description": "desc"
+}
+
+> {%client.global.set("organization_uuid", response.body.id); %}
+
 ### organization | get
 
 GET {{host}}/api/v1/organization/{{organization_uuid}}
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+### organization | list
+
+GET {{host}}/api/v1/organization/
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
