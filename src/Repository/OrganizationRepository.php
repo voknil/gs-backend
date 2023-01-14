@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Organization;
+use App\Exception\OrganizationAlreadyExists;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
@@ -32,15 +34,6 @@ class OrganizationRepository extends ServiceEntityRepository
                 ->getOneOrNullResult();
     }
 
-    public function save(Organization $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
     public function remove(Organization $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -50,20 +43,26 @@ class OrganizationRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Organization[] Returns an array of Organization objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @throws OrganizationAlreadyExists
+     */
+    public function add(Organization $entity)
+    {
+        try {
+            $this->save($entity, true);
+        } catch (UniqueConstraintViolationException $exception) {
+            throw new OrganizationAlreadyExists(previous: $exception);
+        }
+    }
+
+    public function save(Organization $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 
 //    public function findOneBySomeField($value): ?Organization
 //    {
