@@ -6,6 +6,7 @@ use App\Exception\OrganizationNotFound;
 use App\Repository\OrganizationRepository;
 use App\Response\Organization\GetOrganization;
 use App\Response\Organization\ListOrganization;
+use App\Response\Organization\ListOrganizationForSelect;
 use Symfony\Component\Uid\Uuid;
 
 final class QueryProcessor
@@ -37,5 +38,12 @@ final class QueryProcessor
         $organizationList = $this->organizationRepository->findAll();
 
         return new ListOrganization($organizationList);
+    }
+
+    public function getAllForSelect(): ListOrganizationForSelect
+    {
+        $organizationList = $this->organizationRepository->findAll();
+
+        return new ListOrganizationForSelect($organizationList);
     }
 }
