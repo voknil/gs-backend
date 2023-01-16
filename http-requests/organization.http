@@ -25,3 +25,10 @@ GET {{host}}/api/v1/organization/
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
+
+### organization | list for select
+
+GET {{host}}/api/v1/organization/select/
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
