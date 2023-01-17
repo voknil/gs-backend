@@ -72,7 +72,7 @@ final class UserProfiler
         return new GetUserProfileResponse($user, $this->mediaStorage);
     }
 
-    private function getCurrentUser(): ?User
+    public function getCurrentUser(): ?User
     {
         $user = $this->security->getUser();
 

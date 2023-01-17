@@ -32,3 +32,10 @@ GET {{host}}/api/v1/organization/select/
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
+
+### organization | join
+
+PUT {{host}}/api/v1/organization/{{organization_uuid}}/join/
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
