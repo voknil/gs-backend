@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Response\User;
 
+use App\Entity\Organization;
 use App\Entity\User;
 use App\Media\Storage\Storage;
 use App\Media\Storage\StorageFile;
+use App\Response\Organization\GetOrganizationForSelect;
 use App\User\Enum\Gender;
 use DateTimeImmutable;
 
@@ -63,5 +65,16 @@ final class GetCurrentUserProfile
         }
 
         return $this->mediaStorage->getFileByUuid($imageUuid);
+    }
+
+    /**
+     * @return array<GetOrganizationForSelect>
+     */
+    public function getOrganizations(): array
+    {
+        return $this->user
+            ->getOrganizations()
+            ->map(fn(Organization $organization) => new GetOrganizationForSelect($organization))
+            ->toArray();
     }
 }

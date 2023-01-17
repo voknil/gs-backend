@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrganizationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -20,6 +22,14 @@ class Organization
 
     #[ORM\Column(type: 'text', unique: false, nullable: true)]
     private ?string $description;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'organizations')]
+    private Collection $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public static function create(Uuid $id, string $name, ?string $description = null): static
     {
@@ -44,5 +54,32 @@ class Organization
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeOrganization($this);
+        }
+
+        return $this;
     }
 }

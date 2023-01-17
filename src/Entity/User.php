@@ -6,6 +6,7 @@ use App\Persistence\Repository\UserRepository;
 use App\User\Command\UpdateUser;
 use App\User\Enum\Gender;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,6 +27,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private array $roles = [];
+
+
+    #[ORM\ManyToMany(targetEntity: Organization::class, inversedBy: 'users')]
+    private Collection $organizations;
 
     /**
      * @var string The hashed password
@@ -190,5 +195,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getImageUuid(): ?Uuid
     {
         return $this->imageUuid;
+    }
+
+    /**
+     * @return Collection<int, Organization>
+     */
+    public function getOrganizations(): Collection
+    {
+        return $this->organizations;
+    }
+
+    public function addOrganization(Organization $organization): self
+    {
+        if (!$this->organizations->contains($organization)) {
+            $this->organizations->add($organization);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganization(Organization $organization): self
+    {
+        $this->organizations->removeElement($organization);
+
+        return $this;
     }
 }
