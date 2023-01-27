@@ -1,0 +1,6 @@
+### vacany-category list
+
+GET {{host}}/api/v1/vacancy/category/
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
