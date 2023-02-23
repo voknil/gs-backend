@@ -59,6 +59,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'uuid', nullable: true)]
     private ?Uuid $imageUuid;
 
+    #[ORM\Column(type: 'string', length: '255', nullable: true)]
+    private ?string $country;
+
+    #[ORM\Column(type: 'string', length: '255', nullable: true)]
+    private ?string $city;
+
+    #[ORM\Column(type: 'string', length: '255',nullable: true)]
+    private ?string $phone;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $aboutMe;
+
+    #[ORM\Column(type: 'string', length: '255', nullable: true)]
+    private ?string $vk;
+
+    #[ORM\Column(type: 'string', length: '255', nullable: true)]
+    private ?string $facebook;
+
+    #[ORM\Column(type: 'string', length: '255', nullable: true)]
+    private ?string $instagram;
+
+    #[ORM\Column(type: 'string', length: '255', nullable: true)]
+    private ?string $telegram;
+
     public static function create(Uuid $id, string $email): static
     {
         $user = new static();
@@ -75,6 +99,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->gender = $command->getGender();
         $this->birthDate = $command->getBirthDate();
         $this->imageUuid = $command->getImageUuid();
+        $this->country = $command->getCountry();
+        $this->city = $command->getCity();
+        $this->setLocale($command->getLocale());
+        $this->phone = $command->getPhone();
+        $this->aboutMe = $command->getAboutMe();
+        $this->vk = $command->getVk();
+        $this->facebook = $command->getFacebook();
+        $this->instagram = $command->getInstagram();
+        $this->telegram = $command->getTelegram();
 
         return $this;
     }
@@ -195,6 +228,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getImageUuid(): ?Uuid
     {
         return $this->imageUuid;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function getAboutMe(): ?string
+    {
+        return $this->aboutMe;
+    }
+
+    public function getVk(): ?string
+    {
+        return $this->vk;
+    }
+
+    public function getFacebook(): ?string
+    {
+        return $this->facebook;
+    }
+
+    public function getInstagram(): ?string
+    {
+        return $this->instagram;
+    }
+
+    public function getTelegram(): ?string
+    {
+        return $this->telegram;
     }
 
     /**

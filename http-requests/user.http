@@ -25,9 +25,19 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "lastName": "test",
+    "firstname": "testname",
+    "lastName": "testlastname",
     "birthDate": "2022-12-25",
     "gender": "male",
-    "imageUuid": "18bee1c3-7469-42fe-b7ae-1c88645d6232"
+    "country": "Россия",
+    "city": "Владивосток",
+    "locale": "ru",
+    "phone": "+79990008877",
+    "imageUuid": "18bee1c3-7469-42fe-b7ae-1c88645d6232",
+    "aboutMe": "Я узнал, что у меня, есть огромная семья. И тропинка, и лесок, в поле каждый колосок, речка, небо голубое",
+    "vk": "vk.com/goodserfer",
+    "facebook": "fb.com/goodserfer",
+    "instagram": "@goodserfer",
+    "telegram": "@goodserfer"
 }
 
