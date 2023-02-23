@@ -67,6 +67,46 @@ final class GetCurrentUserProfile
         return $this->mediaStorage->getFileByUuid($imageUuid);
     }
 
+    public function getCountry(): ?string
+    {
+        return $this->user->getCountry();
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->user->getCity();
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->user->getPhone();
+    }
+
+    public function getAboutMe(): ?string
+    {
+        return $this->user->getAboutMe();
+    }
+
+    public function getVk(): ?string
+    {
+        return $this->user->getVk();
+    }
+
+    public function getFacebook(): ?string
+    {
+        return $this->user->getFacebook();
+    }
+
+    public function getInstagram(): ?string
+    {
+        return $this->user->getInstagram();
+    }
+
+    public function getTelegram(): ?string
+    {
+        return $this->user->getTelegram();
+    }
+
     /**
      * @return array<GetOrganizationForSelect>
      */
