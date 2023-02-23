@@ -25,6 +25,8 @@
         vulcain
         push
 
+        {$ADDITIONAL_HEADER}
+
         reverse_proxy gs_frontend:80
     }
 
