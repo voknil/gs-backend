@@ -25,7 +25,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "firstname": "testname",
+    "firstName": "testname",
     "lastName": "testlastname",
     "birthDate": "2022-12-25",
     "gender": "male",
