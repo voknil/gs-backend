@@ -14,7 +14,7 @@ Authorization: Bearer {{auth_token}}
 
 ### organization | get
 
-GET {{host}}/api/v1/organization/{{organization_uuid}}
+GET {{host}}/api/v1/organization/1ed92842-df9f-650a-afc8-6347d2b33e41
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
@@ -25,6 +25,7 @@ GET {{host}}/api/v1/organization/
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
+Origin: https://localhost:3000
 
 ### organization | list for select
 
