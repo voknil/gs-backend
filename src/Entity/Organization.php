@@ -20,8 +20,29 @@ class Organization
     #[ORM\Column(length: 255, unique: true, nullable: false)]
     private string $name;
 
+    #[ORM\Column(length: 255)]
+    private ?string $address;
+
+    #[ORM\Column(length: 255)]
+    private ?string $type;
+
+    #[ORM\Column(length: 255)]
+    private ?string $website;
+
     #[ORM\Column(type: 'text', unique: false, nullable: true)]
     private ?string $description;
+
+    #[ORM\Column(length: 255)]
+    private ?string $vk;
+
+    #[ORM\Column(length: 255)]
+    private ?string $facebook;
+
+    #[ORM\Column(length: 255)]
+    private ?string $instagram;
+
+    #[ORM\Column(length: 255)]
+    private ?string $telegram;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'organizations')]
     private Collection $users;
@@ -31,12 +52,30 @@ class Organization
         $this->users = new ArrayCollection();
     }
 
-    public static function create(Uuid $id, string $name, ?string $description = null): static
+    public static function create(
+        Uuid    $id,
+        string  $name,
+        ?string $address = null,
+        ?string $type = null,
+        ?string $website = null,
+        ?string $description = null,
+        ?string $vk = null,
+        ?string $facebook = null,
+        ?string $instagram = null,
+        ?string $telegram = null,
+    ): static
     {
         $organization = new static();
         $organization->id = $id;
+        $organization->address = $address;
         $organization->name = $name;
+        $organization->type = $type;
+        $organization->website = $website;
         $organization->description = $description;
+        $organization->vk = $vk;
+        $organization->facebook = $facebook;
+        $organization->instagram = $instagram;
+        $organization->telegram = $telegram;
 
         return $organization;
     }
@@ -81,5 +120,40 @@ class Organization
         }
 
         return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function getVk(): ?string
+    {
+        return $this->vk;
+    }
+
+    public function getFacebook(): ?string
+    {
+        return $this->facebook;
+    }
+
+    public function getInstagram(): ?string
+    {
+        return $this->instagram;
+    }
+
+    public function getTelegram(): ?string
+    {
+        return $this->telegram;
     }
 }

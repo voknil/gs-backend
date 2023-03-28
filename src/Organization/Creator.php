@@ -22,7 +22,18 @@ final class Creator
      */
     public function create(CreateOrganization $request): GetOrganization
     {
-        $organization = Organization::create(Uuid::v4(), $request->getName(), $request->getDescription());
+        $organization = Organization::create(
+            Uuid::v4(),
+            $request->getName(),
+            $request->getAddress(),
+            $request->getType(),
+            $request->getWebsite(),
+            $request->getDescription(),
+            $request->getVk(),
+            $request->getFacebook(),
+            $request->getInstagram(),
+            $request->getTelegram(),
+        );
         $this->organizationRepository->add($organization);
 
         return new GetOrganization($organization);
