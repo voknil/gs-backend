@@ -6,8 +6,15 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "name": "Test Organization",
-    "description": "desc"
+    "name": "Название",
+    "address": "г. Москва, Красная площадь 1",
+    "type": "ООО",
+    "website": "http://test.org",
+    "description": "Описание",
+    "vk": "@oloolo",
+    "facebook": "@ololoev",
+    "instagram": "@vinnie",
+    "telegram": "@thepooh"
 }
 
 > {%client.global.set("organization_uuid", response.body.id); %}
@@ -25,6 +32,7 @@ GET {{host}}/api/v1/organization/
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
+Origin: https://localhost:3000
 
 ### organization | list for select
 
