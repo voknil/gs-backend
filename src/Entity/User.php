@@ -16,6 +16,8 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const DEFAULT_LOCALE = 'ru';
+
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true, nullable: false)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -42,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private bool $isVerified = false;
 
     #[ORM\Column(type: 'string', length: 6, nullable: false)]
-    private string $locale = 'ru';
+    private string $locale = self::DEFAULT_LOCALE;
 
     #[ORM\Column(type: 'string', length: '255', nullable: true)]
     private ?string $firstName;
@@ -199,9 +201,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->locale;
     }
 
-    public function setLocale(string $locale): self
+    public function setLocale(?string $locale): self
     {
-        $this->locale = $locale;
+        if (null !== $locale) {
+            $this->locale = $locale;
+        }
+
         return $this;
     }
 
