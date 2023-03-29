@@ -24,6 +24,6 @@ Content-Type: {{media_upload_content_type}}
 ### check cors
 
 OPTIONS {{media_upload_url}}
-Origin: http://gudsurfing.ru
+Origin: {{host}}
 Access-Control-Request-Method: PUT
 
