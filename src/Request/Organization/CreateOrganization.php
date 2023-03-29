@@ -11,18 +11,18 @@ final class CreateOrganization extends JsonValidatedRequest implements \App\Orga
     #[Assert\NotBlank]
     protected string $name;
 
-    protected ?string $address;
+    protected ?string $address = null;
 
-    protected ?string $type;
+    protected ?string $type = null;
 
-    protected ?string $website;
+    protected ?string $website = null;
 
-    protected ?string $description;
+    protected ?string $description = null;
 
-    protected ?string $vk;
-    protected ?string $facebook;
-    protected ?string $instagram;
-    protected ?string $telegram;
+    protected ?string $vk = null;
+    protected ?string $facebook = null;
+    protected ?string $instagram = null;
+    protected ?string $telegram = null;
 
 
     public function getName(): string
