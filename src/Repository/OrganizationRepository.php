@@ -55,6 +55,11 @@ class OrganizationRepository extends ServiceEntityRepository
         }
     }
 
+    public function update(Organization $entity)
+    {
+        $this->save($entity, true);
+    }
+
     public function save(Organization $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
