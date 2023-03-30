@@ -80,6 +80,31 @@ class Organization
         return $organization;
     }
 
+    public function update(
+        string  $name,
+        ?string $address = null,
+        ?string $type = null,
+        ?string $website = null,
+        ?string $description = null,
+        ?string $vk = null,
+        ?string $facebook = null,
+        ?string $instagram = null,
+        ?string $telegram = null,
+    ): static
+    {
+        $this->name = $name;
+        $this->address = $address;
+        $this->type = $type;
+        $this->website = $website;
+        $this->description = $description;
+        $this->vk = $vk;
+        $this->facebook = $facebook;
+        $this->instagram = $instagram;
+        $this->telegram = $telegram;
+
+        return $this;
+    }
+
     public function getId(): Uuid
     {
         return $this->id;

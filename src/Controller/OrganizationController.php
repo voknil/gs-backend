@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Exception\DomainException;
-use App\Organization\Creator;
-use App\Organization\Joiner;
+use App\Organization\CommandProcessor;
 use App\Organization\QueryProcessor;
 use App\Request\Organization\CreateOrganization;
+use App\Request\Organization\UpdateOrganization;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
@@ -16,9 +16,8 @@ class OrganizationController extends BaseController
 {
 
     public function __construct(
-        private readonly QueryProcessor $queryProcessor,
-        private readonly Creator        $organizationCreator,
-        private readonly Joiner         $organizationJoiner,
+        private readonly QueryProcessor   $queryProcessor,
+        private readonly CommandProcessor $commandProcessor,
     )
     {
     }
@@ -37,7 +36,7 @@ class OrganizationController extends BaseController
     public function join(Uuid $uuid): Response
     {
         try {
-            $this->organizationJoiner->join($uuid);
+            $this->commandProcessor->join($uuid);
             return new Response();
         } catch (DomainException $exception) {
             return $this->json($exception);
@@ -68,7 +67,17 @@ class OrganizationController extends BaseController
     public function create(CreateOrganization $request): Response
     {
         try {
-            return $this->json($this->organizationCreator->create($request));
+            return $this->json($this->commandProcessor->create($request));
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
+    }
+
+    #[Route('/organization/{uuid}', name: 'app_organization_update', requirements: ['uuid' => Requirement::UUID_V6], methods: ['PUT'])]
+    public function update(Uuid $uuid, UpdateOrganization $request): Response
+    {
+        try {
+            return $this->json($this->commandProcessor->update($uuid, $request));
         } catch (DomainException $exception) {
             return $this->json($exception);
         }
