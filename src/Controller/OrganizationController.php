@@ -99,7 +99,18 @@ class OrganizationController extends BaseController
     public function addUserToOrganization(Uuid $uuid, Request $request): Response
     {
         try {
-            $organization = $this->commandProcessor->addUserToOrganization($uuid, $request->getEmail());
+            $organization = $this->commandProcessor->addUserToOrganization($uuid, $request);
+            return $this->json($organization);
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
+    }
+
+    #[Route('/organization/{uuid}/users', name: 'app_organization_remove_user', methods: ['DELETE'])]
+    public function removeUserFromOrganization(Uuid $uuid, Request $request): Response
+    {
+        try {
+            $organization = $this->commandProcessor->removeUserFromOrganization($uuid, $request);
             return $this->json($organization);
         } catch (DomainException $exception) {
             return $this->json($exception);

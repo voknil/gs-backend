@@ -11,6 +11,7 @@ use App\Organization\Command\CreateOrganization;
 use App\Organization\Command\UpdateOrganization;
 use App\Persistence\Repository\UserRepository;
 use App\Repository\OrganizationRepository;
+use App\Request\User\Request;
 use App\Response\Organization\GetOrganization;
 use App\User\UserProfiler;
 use Symfony\Component\Uid\Uuid;
@@ -117,8 +118,9 @@ final class CommandProcessor
      * @throws OrganizationNotFound
      * @throws UserNotFound
      */
-    public function addUserToOrganization(Uuid $uuidOrganization, $email): GetOrganization
+    public function addUserToOrganization(Uuid $uuidOrganization, Request $request): GetOrganization
     {
+        $email = $request->getEmail();
         $organization = $this->getOrganization($uuidOrganization);
         $user = $this->userRepository->getByEmail($email);
 
@@ -136,17 +138,18 @@ final class CommandProcessor
      * @throws OrganizationNotFound
      * @throws UserNotFound
      */
-    public function removeUserFromOrganization(Uuid $uuidOrganization, $email): GetOrganization
+    public function removeUserFromOrganization(Uuid $uuidOrganization, Request $request): GetOrganization
     {
-        $organization = $this->getOrganization($uuidOrganization);
+        $email = $request->getEmail();
         $user = $this->userRepository->getByEmail($email);
 
         if (null === $user) {
             throw new UserNotFound();
         }
 
-        $organization->addUser($user);
-        $this->organizationRepository->remove($organization, true);
+        $organization = $this->getOrganization($uuidOrganization);
+        $organization->removeUser($user);
+        $this->organizationRepository->save($organization, true);
 
         return new GetOrganization($organization);
     }

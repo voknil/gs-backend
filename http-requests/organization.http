@@ -81,7 +81,16 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "email": "admin333@test.com"
+    "email": "admin222@test.com"
 }
 
+### organization | remove user
+DELETE {{host}}/api/v1/organization/{{organization}}/users
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "email": "admin311@test.com"
+}
 
