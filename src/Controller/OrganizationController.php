@@ -7,6 +7,7 @@ use App\Organization\CommandProcessor;
 use App\Organization\QueryProcessor;
 use App\Request\Organization\CreateOrganization;
 use App\Request\Organization\UpdateOrganization;
+use App\Request\User\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
@@ -78,6 +79,15 @@ class OrganizationController extends BaseController
     {
         try {
             return $this->json($this->commandProcessor->update($uuid, $request));
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
+    }
+    #[Route('/organization/{uuid}/users', name: 'app_organization_users_list_for_command', methods: ['GET'])]
+    public function organizationUsers(Uuid $uuid): Response
+    {
+        try {
+            return $this->json($this->queryProcessor->getUsers($uuid));
         } catch (DomainException $exception) {
             return $this->json($exception);
         }

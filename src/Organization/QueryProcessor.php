@@ -7,6 +7,7 @@ use App\Repository\OrganizationRepository;
 use App\Response\Organization\GetOrganization;
 use App\Response\Organization\ListOrganization;
 use App\Response\Organization\ListOrganizationForSelect;
+use App\Response\Organization\OrganizationUserList;
 use Symfony\Component\Uid\Uuid;
 
 final class QueryProcessor
@@ -46,4 +47,21 @@ final class QueryProcessor
 
         return new ListOrganizationForSelect($organizationList);
     }
+
+    /**
+     * @throws OrganizationNotFound
+     */
+    public function getUsers(Uuid $uuid): OrganizationUserList
+    {
+        $organization = $this->organizationRepository->get($uuid);
+
+        if (null === $organization) {
+            throw new OrganizationNotFound();
+        }
+
+        return new OrganizationUserList($organization->getUsers());
+
+    }
+
+
 }

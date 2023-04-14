@@ -41,3 +41,14 @@ Authorization: Bearer {{auth_token}}
     "telegram": "@goodserfer"
 }
 
+
+### user | find by email
+
+POST {{host}}/api/v1/user/find
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "email": "admin@test.com"
+}

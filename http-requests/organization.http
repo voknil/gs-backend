@@ -6,8 +6,8 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "name": "Название",
-    "address": "г. Москва, Красная площадь 1",
+    "name": "Ярар2",
+    "address": "г. Казань, Пушкина 46",
     "type": "ООО",
     "website": "http://test.org",
     "description": "Описание",
@@ -66,3 +66,11 @@ PUT {{host}}/api/v1/organization/{{organization_uuid}}/join/
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
+
+
+### organization | user list
+GET {{host}}/api/v1/organization/{{organization}}/users
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
