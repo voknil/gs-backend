@@ -5,7 +5,9 @@ namespace App\User;
 use App\Entity\User;
 use App\Exception\UserNotFound;
 use App\Persistence\Repository\UserRepository;
+use App\Request\User\Request;
 use App\Response\User\UserForSelect;
+use App\Response\User\UserSelect;
 
 final class QueryProcessor
 {
@@ -15,8 +17,9 @@ final class QueryProcessor
     {
     }
 
-    public function findUserByEmail(string $email): UserForSelect
+    public function findUser(Request $request): UserSelect
     {
+        $email = $request->getEmail();
         $user = $this->userRepository->getByEmail($email);
 
         if (null === $user) {

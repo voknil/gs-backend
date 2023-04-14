@@ -9,6 +9,7 @@ use App\Exception\OrganizationNotFound;
 use App\Exception\UserNotFound;
 use App\Organization\Command\CreateOrganization;
 use App\Organization\Command\UpdateOrganization;
+use App\Persistence\Repository\UserRepository;
 use App\Repository\OrganizationRepository;
 use App\Response\Organization\GetOrganization;
 use App\User\UserProfiler;
@@ -19,6 +20,7 @@ final class CommandProcessor
     public function __construct(
         private readonly OrganizationRepository $organizationRepository,
         private readonly UserProfiler           $userProfiler,
+        private readonly UserRepository         $userRepository,
     )
     {
     }
@@ -109,5 +111,43 @@ final class CommandProcessor
         }
 
         return $user;
+    }
+
+    /**
+     * @throws OrganizationNotFound
+     * @throws UserNotFound
+     */
+    public function addUserToOrganization(Uuid $uuidOrganization, $email): GetOrganization
+    {
+        $organization = $this->getOrganization($uuidOrganization);
+        $user = $this->userRepository->getByEmail($email);
+
+        if (null === $user) {
+            throw new UserNotFound();
+        }
+
+        $organization->addUser($user);
+        $this->organizationRepository->save($organization, true);
+
+        return new GetOrganization($organization);
+    }
+
+    /**
+     * @throws OrganizationNotFound
+     * @throws UserNotFound
+     */
+    public function removeUserFromOrganization(Uuid $uuidOrganization, $email): GetOrganization
+    {
+        $organization = $this->getOrganization($uuidOrganization);
+        $user = $this->userRepository->getByEmail($email);
+
+        if (null === $user) {
+            throw new UserNotFound();
+        }
+
+        $organization->addUser($user);
+        $this->organizationRepository->remove($organization, true);
+
+        return new GetOrganization($organization);
     }
 }

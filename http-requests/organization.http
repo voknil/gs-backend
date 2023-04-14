@@ -74,3 +74,14 @@ Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
+### organization | add user
+POST {{host}}/api/v1/organization/{{organization}}/users
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "email": "admin333@test.com"
+}
+
+

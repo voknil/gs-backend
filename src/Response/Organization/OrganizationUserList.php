@@ -3,9 +3,11 @@
 namespace App\Response\Organization;
 
 use App\Entity\User;
+use App\Response\ListResponse;
 use App\Response\User\GetUser;
 use Doctrine\Common\Collections\Collection;
-class OrganizationUserList
+
+class OrganizationUserList extends ListResponse
 {
     /**
      * @param Collection<User> $userList

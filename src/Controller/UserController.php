@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\DomainException;
-use App\Exception\UserNotFound;
 use App\Request\User\GetCurrentUserProfile;
 use App\Request\User\Request;
 use App\Request\User\UpdateCurrentUserProfile;
-use App\Response\User\UserForSelect;
 use App\User\QueryProcessor;
 use App\User\UserProfiler;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -22,8 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private readonly UserProfiler $userProfiler,
-        private readonly QueryProcessor   $queryProcessor,
+        private readonly UserProfiler   $userProfiler,
+        private readonly QueryProcessor $queryProcessor,
     )
     {
     }
@@ -61,17 +59,14 @@ class UserController extends AbstractController
         }
     }
 
-    /**
-     * @throws UserNotFound
-     */
-    #[Route('/user/find', name: 'app_user_find_by_email', methods: ['POST'])]
-    public function findUser(Request $request):JsonResponse{
-        try {
-            $email = $request->getEmail();
-            return $this->json($this->queryProcessor->findUserByEmail($email));
-        }catch (DomainException $exception){
-            return $this->json($exception);
 
+    #[Route('/user/find', name: 'app_user_find', methods: ['GET'])]
+    public function findUser(Request $request): JsonResponse
+    {
+        try {
+            return $this->json($this->queryProcessor->findUser($request));
+        } catch (DomainException $exception) {
+            return $this->json($exception);
         }
     }
 }

@@ -83,11 +83,24 @@ class OrganizationController extends BaseController
             return $this->json($exception);
         }
     }
-    #[Route('/organization/{uuid}/users', name: 'app_organization_users_list_for_command', methods: ['GET'])]
+
+    #[Route('/organization/{uuid}/users', name: 'app_organization_users_list', methods: ['GET'])]
     public function organizationUsers(Uuid $uuid): Response
     {
         try {
             return $this->json($this->queryProcessor->getUsers($uuid));
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
+    }
+
+
+    #[Route('/organization/{uuid}/users', name: 'app_organization_add_user', methods: ['POST'])]
+    public function addUserToOrganization(Uuid $uuid, Request $request): Response
+    {
+        try {
+            $organization = $this->commandProcessor->addUserToOrganization($uuid, $request->getEmail());
+            return $this->json($organization);
         } catch (DomainException $exception) {
             return $this->json($exception);
         }

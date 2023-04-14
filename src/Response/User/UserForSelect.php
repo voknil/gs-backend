@@ -5,7 +5,7 @@ namespace App\Response\User;
 
 use App\Entity\User;
 
-final class UserForSelect
+final class UserForSelect implements UserSelect
 {
     public function __construct(
         private readonly User    $user,
