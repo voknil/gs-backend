@@ -120,14 +120,9 @@ final class CommandProcessor
      */
     public function addUserToOrganization(Uuid $uuidOrganization, Request $request): GetOrganization
     {
-        $email = $request->getEmail();
+        $user = $this->getUser($request);
+
         $organization = $this->getOrganization($uuidOrganization);
-        $user = $this->userRepository->getByEmail($email);
-
-        if (null === $user) {
-            throw new UserNotFound();
-        }
-
         $organization->addUser($user);
         $this->organizationRepository->save($organization, true);
 
@@ -140,17 +135,29 @@ final class CommandProcessor
      */
     public function removeUserFromOrganization(Uuid $uuidOrganization, Request $request): GetOrganization
     {
-        $email = $request->getEmail();
-        $user = $this->userRepository->getByEmail($email);
-
-        if (null === $user) {
-            throw new UserNotFound();
-        }
+        $user = $this->getUser($request);
 
         $organization = $this->getOrganization($uuidOrganization);
         $organization->removeUser($user);
         $this->organizationRepository->save($organization, true);
 
         return new GetOrganization($organization);
+    }
+
+    /**
+     * @param Request $request
+     * @return User
+     * @throws UserNotFound
+     */
+    public function getUser(Request $request): User
+    {
+        $id = $request->getId();
+        $user = $this->userRepository->get($id);
+
+        if (null === $user) {
+            throw new UserNotFound();
+        }
+
+        return $user;
     }
 }

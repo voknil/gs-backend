@@ -81,7 +81,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "email": "admin222@test.com"
+    "id": "1eddad80-9fa1-609e-9cd7-f5b0fbdefe24"
 }
 
 ### organization | remove user
@@ -91,6 +91,6 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "email": "admin311@test.com"
+    "id": "1eddad80-9fa1-609e-9cd7-f5b0fbdefe24"
 }
 

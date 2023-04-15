@@ -60,7 +60,7 @@ class UserController extends AbstractController
     }
 
 
-    #[Route('/user/find', name: 'app_user_find', methods: ['GET'])]
+    #[Route('/user/search', name: 'app_user_search', methods: ['GET'])]
     public function findUser(Request $request): JsonResponse
     {
         try {

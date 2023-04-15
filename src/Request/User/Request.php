@@ -4,16 +4,16 @@ declare(strict_types=1);
 namespace App\Request\User;
 
 use App\Request\JsonValidatedRequest;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class Request extends JsonValidatedRequest
 {
-    #[Assert\Email]
     #[Assert\NotBlank]
-    protected ?string $email;
+    protected ?string $id;
 
-    public function getEmail(): string
+    public function getId(): Uuid
     {
-        return $this->email;
+        return Uuid::fromString($this->id);
     }
 }

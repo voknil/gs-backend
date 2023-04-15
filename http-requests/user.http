@@ -42,9 +42,9 @@ Authorization: Bearer {{auth_token}}
 }
 
 
-### user | find by email
+### user | search by email
 
-GET {{host}}/api/v1/user/find
+GET {{host}}/api/v1/user/search
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}

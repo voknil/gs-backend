@@ -99,8 +99,7 @@ class OrganizationController extends BaseController
     public function addUserToOrganization(Uuid $uuid, Request $request): Response
     {
         try {
-            $organization = $this->commandProcessor->addUserToOrganization($uuid, $request);
-            return $this->json($organization);
+            return $this->json($this->commandProcessor->addUserToOrganization($uuid, $request));
         } catch (DomainException $exception) {
             return $this->json($exception);
         }
