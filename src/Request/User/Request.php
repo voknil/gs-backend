@@ -9,11 +9,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class Request extends JsonValidatedRequest
 {
-    #[Assert\NotBlank]
     protected ?string $id;
+    protected ?string $email;
 
     public function getId(): Uuid
     {
         return Uuid::fromString($this->id);
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 }
