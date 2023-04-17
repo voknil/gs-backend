@@ -8,7 +8,7 @@ use App\Entity\User;
 final class UserForSelect implements UserSelect
 {
     public function __construct(
-        private readonly User    $user,
+        private readonly User $user,
     )
     {
     }
@@ -18,15 +18,18 @@ final class UserForSelect implements UserSelect
         return (string)$this->user->getId();
     }
 
-    public function getFirstName():string{
+    public function getFirstName(): string
+    {
         return (string)$this->user->getFirstName();
     }
 
-    public function getLastName():string{
+    public function getLastName(): string
+    {
         return (string)$this->user->getLastName();
     }
 
-    public function getEmail():string{
+    public function getEmail(): string
+    {
         return (string)$this->user->getEmail();
     }
 }

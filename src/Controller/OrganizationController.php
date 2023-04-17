@@ -109,8 +109,7 @@ class OrganizationController extends BaseController
     public function removeUserFromOrganization(Uuid $uuid, Request $request): Response
     {
         try {
-            $organization = $this->commandProcessor->removeUserFromOrganization($uuid, $request);
-            return $this->json($organization);
+            return $this->json($this->commandProcessor->removeUserFromOrganization($uuid, $request));
         } catch (DomainException $exception) {
             return $this->json($exception);
         }
