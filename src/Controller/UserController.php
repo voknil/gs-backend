@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\DomainException;
+use App\Exception\UserNotUpdated;
 use App\Request\User\GetCurrentUserProfile;
 use App\Request\User\UpdateCurrentUserProfile;
 use App\User\UserProfiler;
@@ -44,15 +45,14 @@ class UserController extends AbstractController
         );
     }
 
+    /**
+     * @throws UserNotUpdated
+     */
     #[Route('/user/profile/', name: 'app_user_profile_update', methods: ['PUT'])]
     public function updateCurrentUserProfile(UpdateCurrentUserProfile $request): JsonResponse
     {
-        try {
-            return $this->json(
-                $this->userProfiler->updateCurrentUserProfile($request)
-            );
-        } catch (DomainException $exception) {
-            return $this->json($exception);
-        }
+        return $this->json(
+            $this->userProfiler->updateCurrentUserProfile($request)
+        );
     }
 }

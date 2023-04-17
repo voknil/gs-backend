@@ -2,19 +2,18 @@
 
 namespace App\Controller;
 
-use App\Exception\DomainException;
 use App\Exception\UserVerificationFailed;
 use App\Registration\RegistrarInterface;
 use App\Request\RegisterUser;
 use App\Request\VerifyUser;
-use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: "public/register")]
-class RegistrationController extends BaseController
+class RegistrationController extends AbstractController
 {
     public function __construct(
         private readonly RegistrarInterface $registrar,
@@ -43,13 +42,7 @@ class RegistrationController extends BaseController
     )]
     public function registerUser(RegisterUser $request): JsonResponse
     {
-        try {
-            return $this->json($this->registrar->registerUser($request));
-        } catch (DomainException $exception) {
-            return $this->json(
-                $exception
-            );
-        }
+        return $this->json($this->registrar->registerUser($request));
     }
 
     #[Route('/verify', name: 'app_register_verify', methods: ['GET'])]
@@ -64,8 +57,8 @@ class RegistrationController extends BaseController
     )]
     #[OA\Parameter(
         name: 'id',
-        in: 'query',
         description: 'Verification code',
+        in: 'query',
         schema: new OA\Schema(type: 'string')
     )]
     public function verifyUserEmail(VerifyUser $request): Response
