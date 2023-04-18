@@ -9,7 +9,9 @@ use App\Exception\OrganizationNotFound;
 use App\Exception\UserNotFound;
 use App\Organization\Command\CreateOrganization;
 use App\Organization\Command\UpdateOrganization;
+use App\Persistence\Repository\UserRepository;
 use App\Repository\OrganizationRepository;
+use App\Request\User\Request;
 use App\Response\Organization\GetOrganization;
 use App\User\UserProfiler;
 use Symfony\Component\Uid\Uuid;
@@ -19,6 +21,7 @@ final class CommandProcessor
     public function __construct(
         private readonly OrganizationRepository $organizationRepository,
         private readonly UserProfiler           $userProfiler,
+        private readonly UserRepository         $userRepository,
     )
     {
     }
@@ -103,6 +106,53 @@ final class CommandProcessor
     private function getCurrentUser(): User
     {
         $user = $this->userProfiler->getCurrentUser();
+
+        if (null === $user) {
+            throw new UserNotFound();
+        }
+
+        return $user;
+    }
+
+    /**
+     * @throws OrganizationNotFound
+     * @throws UserNotFound
+     */
+    public function addUserToOrganization(Uuid $uuidOrganization, Request $request): GetOrganization
+    {
+        $user = $this->getUser($request);
+
+        $organization = $this->getOrganization($uuidOrganization);
+        $organization->addUser($user);
+        $this->organizationRepository->save($organization, true);
+
+        return new GetOrganization($organization);
+    }
+
+    /**
+     * @throws OrganizationNotFound
+     * @throws UserNotFound
+     */
+    public function removeUserFromOrganization(Uuid $uuidOrganization, Request $request): GetOrganization
+    {
+        $user = $this->getUser($request);
+
+        $organization = $this->getOrganization($uuidOrganization);
+        $organization->removeUser($user);
+        $this->organizationRepository->save($organization, true);
+
+        return new GetOrganization($organization);
+    }
+
+    /**
+     * @param Request $request
+     * @return User
+     * @throws UserNotFound
+     */
+    public function getUser(Request $request): User
+    {
+        $id = $request->getId();
+        $user = $this->userRepository->get($id);
 
         if (null === $user) {
             throw new UserNotFound();

@@ -9,6 +9,7 @@ use App\Organization\CommandProcessor;
 use App\Organization\QueryProcessor;
 use App\Request\Organization\CreateOrganization;
 use App\Request\Organization\UpdateOrganization;
+use App\Request\User\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -74,5 +75,36 @@ class OrganizationController extends AbstractController
     public function update(Uuid $uuid, UpdateOrganization $request): JsonResponse
     {
         return $this->json($this->commandProcessor->update($uuid, $request));
+    }
+
+    #[Route('/organization/{uuid}/users', name: 'app_organization_users_list', methods: ['GET'])]
+    public function organizationUsers(Uuid $uuid): Response
+    {
+        try {
+            return $this->json($this->queryProcessor->getUsers($uuid));
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
+    }
+
+
+    #[Route('/organization/{uuid}/users', name: 'app_organization_add_user', methods: ['POST'])]
+    public function addUserToOrganization(Uuid $uuid, Request $request): Response
+    {
+        try {
+            return $this->json($this->commandProcessor->addUserToOrganization($uuid, $request));
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
+    }
+
+    #[Route('/organization/{uuid}/users', name: 'app_organization_remove_user', methods: ['DELETE'])]
+    public function removeUserFromOrganization(Uuid $uuid, Request $request): Response
+    {
+        try {
+            return $this->json($this->commandProcessor->removeUserFromOrganization($uuid, $request));
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
     }
 }

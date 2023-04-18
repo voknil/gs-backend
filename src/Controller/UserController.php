@@ -7,7 +7,9 @@ namespace App\Controller;
 use App\Exception\DomainException;
 use App\Exception\UserNotUpdated;
 use App\Request\User\GetCurrentUserProfile;
+use App\Request\User\Request;
 use App\Request\User\UpdateCurrentUserProfile;
+use App\User\QueryProcessor;
 use App\User\UserProfiler;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
@@ -19,7 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private readonly UserProfiler $userProfiler
+        private readonly UserProfiler   $userProfiler,
+        private readonly QueryProcessor $queryProcessor,
     )
     {
     }
@@ -54,5 +57,16 @@ class UserController extends AbstractController
         return $this->json(
             $this->userProfiler->updateCurrentUserProfile($request)
         );
+    }
+
+
+    #[Route('/user/search', name: 'app_user_search', methods: ['GET'])]
+    public function findUser(Request $request): JsonResponse
+    {
+        try {
+            return $this->json($this->queryProcessor->findUser($request));
+        } catch (DomainException $exception) {
+            return $this->json($exception);
+        }
     }
 }
