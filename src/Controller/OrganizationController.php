@@ -77,34 +77,33 @@ class OrganizationController extends AbstractController
         return $this->json($this->commandProcessor->update($uuid, $request));
     }
 
+    /**
+     * @throws OrganizationNotFound
+     */
     #[Route('/organization/{uuid}/users', name: 'app_organization_users_list', methods: ['GET'])]
-    public function organizationUsers(Uuid $uuid): Response
+    public function getUsersList(Uuid $uuid): Response
     {
-        try {
-            return $this->json($this->queryProcessor->getUsers($uuid));
-        } catch (DomainException $exception) {
-            return $this->json($exception);
-        }
+        return $this->json($this->queryProcessor->getUsers($uuid));
     }
 
 
+    /**
+     * @throws OrganizationNotFound
+     * @throws UserNotFound
+     */
     #[Route('/organization/{uuid}/users', name: 'app_organization_add_user', methods: ['POST'])]
     public function addUserToOrganization(Uuid $uuid, Request $request): Response
     {
-        try {
-            return $this->json($this->commandProcessor->addUserToOrganization($uuid, $request));
-        } catch (DomainException $exception) {
-            return $this->json($exception);
-        }
+        return $this->json($this->commandProcessor->addUserToOrganization($uuid, $request));
     }
 
+    /**
+     * @throws OrganizationNotFound
+     * @throws UserNotFound
+     */
     #[Route('/organization/{uuid}/users', name: 'app_organization_remove_user', methods: ['DELETE'])]
     public function removeUserFromOrganization(Uuid $uuid, Request $request): Response
     {
-        try {
-            return $this->json($this->commandProcessor->removeUserFromOrganization($uuid, $request));
-        } catch (DomainException $exception) {
-            return $this->json($exception);
-        }
+        return $this->json($this->commandProcessor->removeUserFromOrganization($uuid, $request));
     }
 }

@@ -88,34 +88,6 @@ final class CommandProcessor
 
     /**
      * @throws OrganizationNotFound
-     */
-    private function getOrganization(Uuid $uuid): Organization
-    {
-        $organization = $this->organizationRepository->get($uuid);
-
-        if (null === $organization) {
-            throw new OrganizationNotFound();
-        }
-
-        return $organization;
-    }
-
-    /**
-     * @throws UserNotFound
-     */
-    private function getCurrentUser(): User
-    {
-        $user = $this->userProfiler->getCurrentUser();
-
-        if (null === $user) {
-            throw new UserNotFound();
-        }
-
-        return $user;
-    }
-
-    /**
-     * @throws OrganizationNotFound
      * @throws UserNotFound
      */
     public function addUserToOrganization(Uuid $uuidOrganization, Request $request): GetOrganization
@@ -145,14 +117,41 @@ final class CommandProcessor
     }
 
     /**
+     * @throws OrganizationNotFound
+     */
+    private function getOrganization(Uuid $uuid): Organization
+    {
+        $organization = $this->organizationRepository->get($uuid);
+
+        if (null === $organization) {
+            throw new OrganizationNotFound();
+        }
+
+        return $organization;
+    }
+
+    /**
+     * @throws UserNotFound
+     */
+    private function getCurrentUser(): User
+    {
+        $user = $this->userProfiler->getCurrentUser();
+
+        if (null === $user) {
+            throw new UserNotFound();
+        }
+
+        return $user;
+    }
+
+    /**
      * @param Request $request
      * @return User
      * @throws UserNotFound
      */
-    public function getUser(Request $request): User
+    private function getUser(Request $request): User
     {
-        $id = $request->getId();
-        $user = $this->userRepository->get($id);
+        $user = $this->userRepository->get($request->getId());
 
         if (null === $user) {
             throw new UserNotFound();

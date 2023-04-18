@@ -17,7 +17,7 @@ final class QueryProcessor
     {
     }
 
-    public function findUser(Request $request): UserSelect
+    public function search(Request $request): UserSelect
     {
         $email = $request->getEmail();
         $user = $this->userRepository->getByEmail($email);
