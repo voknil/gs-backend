@@ -21,6 +21,9 @@ class TranslationController extends AbstractController
     {
     }
 
+    /**
+     * @throws UserLocaleNotSet
+     */
     #[Route('/translation/set-locale', name: 'app_user_set_locale', methods: ['PUT'])]
     #[OA\Put(
         summary: "Sets user locale",
@@ -44,11 +47,7 @@ class TranslationController extends AbstractController
     )]
     public function setUserLocale(SetUserLocale $request): Response
     {
-        try {
-            $this->userProfiler->updateUserLocale($request);
-            return new Response();
-        } catch (UserLocaleNotSet $exception) {
-            return $this->json($exception);
-        }
+        $this->userProfiler->updateUserLocale($request);
+        return new Response();
     }
 }

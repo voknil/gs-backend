@@ -34,3 +34,7 @@ services:
     _instanceof:
         App\DoctrineType\AbstractEnumType:
             tags: [ 'app.doctrine_enum_type' ]
+            
+    App\Middleware\ExceptionMiddleware:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: __invoke }
