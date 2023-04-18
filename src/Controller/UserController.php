@@ -48,6 +48,38 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/profile/', name: 'app_user_profile_update', methods: ['PUT'])]
+    #[OA\Put(
+        summary: "Update current user profile",
+    )]
+    #[OA\Tag(name: 'user')]
+    #[OA\Response(
+        response: 200,
+        description: 'User profile updated successfully'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'User not found'
+    )]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(type: "object",
+            example: '{
+                "firstName": "testname",
+                "lastName": "testlastname",
+                "birthDate": "2022-12-25",
+                "gender": "male",
+                "country": "Россия",
+                "city": "Владивосток",
+                "locale": "ru",
+                "phone": "+79990008877",
+                "imageUuid": "18bee1c3-7469-42fe-b7ae-1c88645d6232",
+                "aboutMe": "Я узнал, что у меня, есть огромная семья.",
+                "vk": "vk.com/goodserfer",
+                "facebook": "fb.com/goodserfer",
+                "instagram": "@goodserfer",
+                "telegram": "@goodserfer"
+            }'
+        )
+    )]
     public function updateCurrentUserProfile(UpdateCurrentUserProfile $request): JsonResponse
     {
         try {
@@ -61,6 +93,25 @@ class UserController extends AbstractController
 
 
     #[Route('/user/search', name: 'app_user_search', methods: ['GET'])]
+    #[OA\Get(
+        summary: "Search user",
+    )]
+    #[OA\Tag(name: 'user')]
+    #[OA\Response(
+        response: 200,
+        description: 'Found user by email'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'User not found'
+    )]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(type: "object",
+            example: '{
+              "email": "admin@test.com"
+            }'
+        )
+    )]
     public function findUser(Request $request): JsonResponse
     {
         try {
