@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\DomainException;
+use App\Exception\UserNotUpdated;
 use App\Request\User\GetCurrentUserProfile;
 use App\Request\User\Request;
 use App\Request\User\UpdateCurrentUserProfile;
@@ -47,6 +48,9 @@ class UserController extends AbstractController
         );
     }
 
+    /**
+     * @throws UserNotUpdated
+     */
     #[Route('/user/profile/', name: 'app_user_profile_update', methods: ['PUT'])]
     #[OA\Put(
         summary: "Update current user profile",
@@ -82,10 +86,17 @@ class UserController extends AbstractController
     )]
     public function updateCurrentUserProfile(UpdateCurrentUserProfile $request): JsonResponse
     {
+        return $this->json(
+            $this->userProfiler->updateCurrentUserProfile($request)
+        );
+    }
+
+
+    #[Route('/user/search', name: 'app_user_search', methods: ['GET'])]
+    public function findUser(Request $request): JsonResponse
+    {
         try {
-            return $this->json(
-                $this->userProfiler->updateCurrentUserProfile($request)
-            );
+            return $this->json($this->queryProcessor->findUser($request));
         } catch (DomainException $exception) {
             return $this->json($exception);
         }
