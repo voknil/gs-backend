@@ -2,7 +2,6 @@
 
 namespace App\User;
 
-use App\Entity\User;
 use App\Exception\UserNotFound;
 use App\Persistence\Repository\UserRepository;
 use App\Request\User\Request;
