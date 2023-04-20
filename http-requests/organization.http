@@ -94,3 +94,22 @@ Authorization: Bearer {{auth_token}}
     "id": "1eddad80-9fa1-609e-9cd7-f5b0fbdefe24"
 }
 
+### organization | update media files
+
+PUT {{host}}/api/v1/organization/{{organization_uuid}}/media
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "media": [
+        {
+            "id": "1eddad80-9fa1-609e-9cd7-f5b0fbdefe24",
+            "mimeType": "image/png"
+        },
+        {
+            "id": "2eddad80-9fa1-609e-9cd7-f5b0fbdefe25",
+            "mimeType": "video/mp4"
+        }
+    ]
+}

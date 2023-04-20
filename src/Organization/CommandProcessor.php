@@ -11,6 +11,8 @@ use App\Organization\Command\CreateOrganization;
 use App\Organization\Command\UpdateOrganization;
 use App\Persistence\Repository\UserRepository;
 use App\Repository\OrganizationRepository;
+use App\Request\Organization\PhotoGallery\OrganizationPhoto;
+use App\Request\Organization\PhotoGallery\UpdatePhotoGallery;
 use App\Request\User\Request;
 use App\Response\Organization\GetOrganization;
 use App\User\UserProfiler;
@@ -158,5 +160,24 @@ final class CommandProcessor
         }
 
         return $user;
+    }
+
+    /**
+     * @param Uuid $uuid
+     * @param UpdatePhotoGallery $request
+     * @return OrganizationPhoto []
+     * @throws OrganizationNotFound
+     */
+    public function updateMediaFiles(Uuid $uuid, UpdatePhotoGallery $request): array
+    {
+        $organization = $this->getOrganization($uuid);
+        $media = $request->getMedia();
+
+        /**
+         * Реализуем метод updatePhotoGallery для обновления все файлов организации в таблице organization_photo_gallery
+         */
+        //$this->organizationRepository->updatePhotoGallery($organization, $media);
+
+        return $request->getMedia();
     }
 }

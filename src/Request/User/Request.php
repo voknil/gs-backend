@@ -5,7 +5,6 @@ namespace App\Request\User;
 
 use App\Request\JsonValidatedRequest;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Constraints as Assert;
 
 final class Request extends JsonValidatedRequest
 {
