@@ -15,7 +15,7 @@ class MediaFile
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private Uuid $id;
 
-    #[ORM\Column(length: 180, nullable: false)]
+    #[ORM\Column(length: 180, nullable: true)]
     private string $title;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
