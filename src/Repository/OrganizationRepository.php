@@ -78,4 +78,28 @@ class OrganizationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function updatePhotoGallery(Organization $organization, array $media)
+    {
+        $entityManager = $this->getEntityManager();
+        $connection = $entityManager->getConnection();
+        $connection->beginTransaction();
+
+        try {
+            $connection->delete('organization_photo_gallery', ['id_organization' => $organization->getId()]);
+
+            foreach ($media as $mediaFile) {
+                $data = [
+                    'id_media_file' => $mediaFile->getId(),
+                    'id_organization' => $organization->getId(),
+                ];
+                $connection->insert('organization_photo_gallery', $data);
+            }
+
+            $connection->commit();
+        } catch (\Throwable $exception) {
+            $connection->rollBack();
+            throw $exception;
+        }
+    }
 }

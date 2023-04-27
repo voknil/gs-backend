@@ -8,11 +8,12 @@ use App\Exception\UserNotFound;
 use App\Organization\CommandProcessor;
 use App\Organization\QueryProcessor;
 use App\Request\Organization\CreateOrganization;
+use App\Request\Organization\PhotoGallery\UpdatePhotoGallery;
 use App\Request\Organization\UpdateOrganization;
 use App\Request\User\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Uid\Uuid;
@@ -105,5 +106,15 @@ class OrganizationController extends AbstractController
     public function removeUserFromOrganization(Uuid $uuid, Request $request): Response
     {
         return $this->json($this->commandProcessor->removeUserFromOrganization($uuid, $request));
+    }
+
+    /**
+     * @throws OrganizationNotFound
+     */
+    #[Route('/organization/{uuid}/media', name: 'app_organization_update_media_files', methods: ['PUT'])]
+    public function updateMediaFiles(Uuid $uuid, UpdatePhotoGallery $request): Response
+    {
+        $this->commandProcessor->updateMediaFiles($uuid, $request);
+        return new Response();
     }
 }
