@@ -83,8 +83,6 @@ class OrganizationRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         $connection = $entityManager->getConnection();
-        $connection->beginTransaction();
-
         try {
             $connection->delete('organization_photo_gallery', ['id_organization' => $organization->getId()]);
 
@@ -95,10 +93,7 @@ class OrganizationRepository extends ServiceEntityRepository
                 ];
                 $connection->insert('organization_photo_gallery', $data);
             }
-
-            $connection->commit();
         } catch (\Throwable $exception) {
-            $connection->rollBack();
             throw $exception;
         }
     }

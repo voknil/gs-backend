@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\MediaFileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
-use Gedmo\Mapping\Annotation as Gedmo; // gedmo annotations
+use Gedmo\Mapping\Annotation as Gedmo;
+
+// gedmo annotations
 
 
 #[ORM\Entity(repositoryClass: MediaFileRepository::class)]
@@ -19,7 +21,7 @@ class MediaFile
     private Uuid $id;
 
     #[ORM\Column(length: 180, nullable: true)]
-    private string $title;
+    private ?string $title;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
     #[Gedmo\Timestampable(on: 'create')]
@@ -38,7 +40,7 @@ class MediaFile
     public static function create(
         string $title,
         string $mimeType,
-        int $size
+        int    $size
     ): static
     {
         $mediaFile = new static();
@@ -61,13 +63,6 @@ class MediaFile
         return $this->title;
     }
 
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
@@ -83,23 +78,8 @@ class MediaFile
         return $this->mimeType;
     }
 
-    public function setMimeType(string $mimeType): self
-    {
-        $this->mimeType = $mimeType;
-
-        return $this;
-    }
-
     public function getSize(): int
     {
         return $this->size;
     }
-
-    public function setSize(int $size): self
-    {
-        $this->size = $size;
-
-        return $this;
-    }
-
 }
