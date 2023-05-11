@@ -91,6 +91,33 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-    "id": "1eddad80-9fa1-609e-9cd7-f5b0fbdefe24"
+    "id": "1ede4ceb-a632-68c6-baa6-b72180e1a9f2"
 }
 
+### organization | update media files
+
+PUT {{host}}/api/v1/organization/{{organization}}/media
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "media": [
+        {
+            "id": "1ede449b-ed38-65b6-b556-212abf489108",
+            "mimeType": "image/png"
+        },
+        {
+            "id": "1ede4caa-774e-601e-859d-e16ce6512d67",
+            "mimeType": "video/mp4"
+        },
+        {
+            "id": "1ede4d81-a5c9-677c-ac7e-c15cf4c097b9",
+            "mimeType": "video/mp4"
+        },
+        {
+            "id": "1ede449e-2fe9-691c-9396-475ba20e8644",
+            "mimeType": "video/mp4"
+        }
+    ]
+}

@@ -2,6 +2,7 @@
 
 namespace App\Organization;
 
+use App\Entity\MediaFile;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Exception\OrganizationAlreadyExists;
@@ -10,7 +11,10 @@ use App\Exception\UserNotFound;
 use App\Organization\Command\CreateOrganization;
 use App\Organization\Command\UpdateOrganization;
 use App\Persistence\Repository\UserRepository;
+use App\Repository\MediaFileRepository;
 use App\Repository\OrganizationRepository;
+use App\Request\Organization\PhotoGallery\OrganizationPhoto;
+use App\Request\Organization\PhotoGallery\UpdatePhotoGallery;
 use App\Request\User\Request;
 use App\Response\Organization\GetOrganization;
 use App\User\UserProfiler;
@@ -22,6 +26,7 @@ final class CommandProcessor
         private readonly OrganizationRepository $organizationRepository,
         private readonly UserProfiler           $userProfiler,
         private readonly UserRepository         $userRepository,
+        private readonly MediaFileRepository    $mediaFileRepository,
     )
     {
     }
@@ -158,5 +163,17 @@ final class CommandProcessor
         }
 
         return $user;
+    }
+
+    /**
+     * @param Uuid $uuid
+     * @param UpdatePhotoGallery $request
+     * @throws OrganizationNotFound
+     */
+    public function updateMediaFiles(Uuid $uuid, UpdatePhotoGallery $request): void
+    {
+        $organization = $this->getOrganization($uuid);
+        $media = $request->getMedia();
+        $this->organizationRepository->updatePhotoGallery($organization, $media);
     }
 }
