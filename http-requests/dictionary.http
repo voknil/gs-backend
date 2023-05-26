@@ -6,7 +6,7 @@ Authorization: Bearer {{auth_token}}
 
 
 ### local list
-GET {{host}}/api/v1/dict/local
+GET {{host}}/api/v1/dict/locale
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}

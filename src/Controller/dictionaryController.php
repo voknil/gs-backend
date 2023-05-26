@@ -24,10 +24,17 @@ class dictionaryController extends AbstractController
     )]
     public function organizationTypeList(): JsonResponse
     {
-        return $this->json(['ООО', 'ИП']);
+        $locales = ['ООО', 'ИП'];
+        $data = [
+            'organization_type' => array_map(function ($locale) {
+                return $locale;
+            }, $locales),
+            'total' => count($locales)
+        ];
+        return $this->json($data);
     }
 
-    #[Route('/local/', name: 'app_dictionary_local_list', methods: ['GET'])]
+    #[Route('/locale/', name: 'app_dictionary_locale_list', methods: ['GET'])]
     #[OA\Get(
         summary: "List of languages"
     )]
@@ -39,6 +46,13 @@ class dictionaryController extends AbstractController
     )]
     public function getLocal(): JsonResponse
     {
-        return $this->json(['ru', 'en', 'es']);
+        $locales = ['ru', 'en', 'es'];
+        $data = [
+            'locale' => array_map(function ($locale) {
+                return $locale;
+            }, $locales),
+            'total' => count($locales)
+        ];
+        return $this->json($data);
     }
 }
