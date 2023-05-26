@@ -44,7 +44,7 @@ class dictionaryController extends AbstractController
         response: 200,
         description: 'List of languages'
     )]
-    public function getLocal(): JsonResponse
+    public function getLocale(): JsonResponse
     {
         $locales = ['ru', 'en', 'es'];
         $data = [
