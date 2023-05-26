@@ -16,7 +16,7 @@ class QueryProcessorTest extends TestCase
 
     public function testSearch()
     {
-        $user = $this->createUser('1ed7a121-ad2c-6e28-9d78-7517eeb5c166', 'testname', 'testlastname', 'test@example.com');
+        $user = $this->createMock(User::class);
 
         $userRepository = $this->createMock(UserRepository::class);
         $userRepository->expects($this->once())
@@ -39,7 +39,6 @@ class QueryProcessorTest extends TestCase
 
     public function testSearchUserNotFound()
     {
-
         $userRepository = $this->createMock(UserRepository::class);
         $userRepository->expects($this->once())
             ->method('getByEmail')
@@ -57,15 +56,5 @@ class QueryProcessorTest extends TestCase
         $this->expectException(UserNotFound::class);
 
         $processor->search($request);
-    }
-
-    private function createUser(string $id, string $firstName, string $lastName, string $email): User
-    {
-        return new User(
-            Uuid::fromString($id),
-            $firstName,
-            $lastName,
-            $email
-        );
     }
 }

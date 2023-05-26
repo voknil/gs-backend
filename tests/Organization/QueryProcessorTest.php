@@ -14,14 +14,19 @@ use Symfony\Component\Uid\Uuid;
 class QueryProcessorTest extends TestCase
 {
 
-    private function createValidUuid(): Uuid
+    public function uuidDataProvider()
     {
-        return Uuid::fromString('1eddcf12-683d-60c2-a04f-554aa5c08e6b');
+        return [
+            ['1eddcf12-683d-60c2-a04f-554aa5c08e6b']
+        ];
     }
 
-    public function testGetUsers()
+    /**
+     * @dataProvider uuidDataProvider
+     */
+    public function testGetUsers($uuid)
     {
-        $uuid = $this->createValidUuid();
+        $uuid = Uuid::fromString($uuid);
 
         $users = $this->createMock(Collection::class);
 
@@ -43,9 +48,12 @@ class QueryProcessorTest extends TestCase
         $this->assertInstanceOf(OrganizationUserList::class, $result);
     }
 
-    public function testGetUsersWithInvalidOrganization()
+    /**
+     * @dataProvider uuidDataProvider
+     */
+    public function testGetUsersWithInvalidOrganization($uuid)
     {
-        $uuid = $this->createValidUuid();
+        $uuid = Uuid::fromString($uuid);
 
         $organizationRepository = $this->createMock(OrganizationRepository::class);
         $organizationRepository->expects($this->once())

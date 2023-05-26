@@ -15,11 +15,21 @@ use Symfony\Component\Uid\Uuid;
 
 class CommandProcessorTest extends TestCase
 {
-
-    public function testAddUserToOrganization()
+    public function uuidDataProvider()
     {
-        $uuidOrganization = Uuid::fromString('1eddcf12-683d-60c2-a04f-554aa5c08e6b');
-        $uuidUser = Uuid::fromString('2eddcf12-683d-60c2-a04f-554aa5c08e6b');
+        return [
+            ['1eddcf12-683d-60c2-a04f-554aa5c08e6b', '2eddcf12-683d-60c2-a04f-554aa5c08e6b'],
+            // Добавьте здесь другие наборы UUID, если нужно
+        ];
+    }
+
+    /**
+     * @dataProvider uuidDataProvider
+     */
+    public function testAddUserToOrganization($uuidOrganization, $uuidUser)
+    {
+        $uuidOrganization = Uuid::fromString($uuidOrganization);
+        $uuidUser = Uuid::fromString($uuidUser);
 
         $userProfile = $this->createMock(UserProfiler::class);
         $mediaFileRepository = $this->createMock(MediaFileRepository::class);
