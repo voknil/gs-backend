@@ -26,7 +26,7 @@ class dictionaryController extends AbstractController
     {
         $locales = ['ООО', 'ИП'];
         $data = [
-            'organization_type' => array_map(function ($locale) {
+            'list' => array_map(function ($locale) {
                 return $locale;
             }, $locales),
             'total' => count($locales)
@@ -48,7 +48,7 @@ class dictionaryController extends AbstractController
     {
         $locales = ['ru', 'en', 'es'];
         $data = [
-            'locale' => array_map(function ($locale) {
+            'list' => array_map(function ($locale) {
                 return $locale;
             }, $locales),
             'total' => count($locales)
