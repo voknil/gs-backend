@@ -17,7 +17,7 @@ use App\Response\User\GetCurrentUserProfile as GetUserProfileResponse;
 use Exception;
 use Symfony\Component\Security\Core\Security;
 
-final class UserProfiler
+class UserProfiler
 {
     public function __construct(
         private readonly Security       $security,

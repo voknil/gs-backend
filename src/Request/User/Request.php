@@ -6,7 +6,7 @@ namespace App\Request\User;
 use App\Request\JsonValidatedRequest;
 use Symfony\Component\Uid\Uuid;
 
-final class Request extends JsonValidatedRequest
+class Request extends JsonValidatedRequest
 {
     protected ?string $id;
     protected ?string $email;
