@@ -1,0 +1,12 @@
+### organization type list
+GET {{host}}/api/v1/dict/organization/types
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+
+### locale list
+GET {{host}}/api/v1/dict/locale
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
