@@ -1,0 +1,32 @@
+about:
+    us: About us
+    community: Community
+    blog: Blog
+    membership: Membership
+
+ngo:
+    about: About NGO
+    ambassadors: Ambassadors
+    partners: Partners
+
+navigation:
+    about_me: About me
+    my_friends: My friends
+    gallery: Gallery
+    photos: Photos
+    skills: Skills
+    reviews: Reviews
+    applications: Applications
+    password: Password
+    become_host: Become a host
+
+project:
+    where: Where
+    when: When
+    who_you_need: Who you Need
+    what_to_do: What to Do
+    conditions: Conditions
+    description: Description
+    final_touch: Final touch
+
+privacy_policy: Privacy policy

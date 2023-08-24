@@ -1,0 +1,32 @@
+about:
+    us: О проекте
+    community: Сообщество
+    blog: Блог
+    membership: Членство
+
+ngo:
+    about: О НКО
+    ambassadors: Амбассадоры
+    partners: Партнеры
+
+navigation:
+    about_me: Обо мне
+    my_friends: Мои друзья
+    gallery: Галерея
+    photos: Фотографии
+    skills: Навыки
+    reviews: Отзывы
+    applications: Заявки
+    password: Пароль
+    become_host: Стать хостом
+
+project:
+    where: Где
+    when: Когда
+    who_you_need: Кто нужен
+    what_to_do: Что делать
+    conditions: Условия
+    description: Описание
+    final_touch: Последние штрихи
+
+privacy_policy: Политика Конфиденциальности

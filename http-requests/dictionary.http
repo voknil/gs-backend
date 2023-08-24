@@ -10,3 +10,10 @@ GET {{host}}/api/v1/dict/locale
 Accept: application/json, text/plain, */*
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
+
+
+### get word translate
+GET {{host}}/api/v1/dict/translate/about.community
+Accept: application/json, text/plain, */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}

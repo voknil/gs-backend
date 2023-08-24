@@ -8,11 +8,11 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route(path: "dict")]
 class dictionaryController extends AbstractController
 {
-    #[Route('/organization/types/', name: 'app_dictionary_organization_type_list', methods: ['GET'])]
+    #[Route('/dict/organization/types/', name: 'app_dictionary_organization_type_list', methods: ['GET'])]
     #[OA\Get(
         summary: "Organization type list"
     )]
@@ -34,7 +34,7 @@ class dictionaryController extends AbstractController
         return $this->json($data);
     }
 
-    #[Route('/locale/', name: 'app_dictionary_locale_list', methods: ['GET'])]
+    #[Route('/dict/locale/', name: 'app_dictionary_locale_list', methods: ['GET'])]
     #[OA\Get(
         summary: "List of languages"
     )]
@@ -54,5 +54,12 @@ class dictionaryController extends AbstractController
             'total' => count($locales)
         ];
         return $this->json($data);
+    }
+
+    #[Route('/dict/translate/{dictionaryId}', name: 'app_dictionary_translate', methods: ['GET'])]
+    public function getTranslate(string $dictionaryId, TranslatorInterface $translator): JsonResponse
+    {
+        $translatedWord = $translator->trans($dictionaryId, [], 'menu', 'en');
+        return $this->json(['dictionary' => $translatedWord]);
     }
 }
