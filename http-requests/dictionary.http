@@ -13,7 +13,7 @@ Authorization: Bearer {{auth_token}}
 
 
 ### get word translate
-GET {{host}}/api/v1/dict/translate/about.community
+GET {{host}}/api/v1/public/dict/translate/menu/es
 Accept: application/json, text/plain, */*
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+

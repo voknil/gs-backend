@@ -1,0 +1,32 @@
+about:
+    us: Sobre nosotros
+    community: Comunidad
+    blog: Blog
+    membership: Membresía
+
+ngo:
+    about: Sobre la ONG
+    ambassadors: Embajadores
+    partners: Socios
+
+navigation:
+    about_me: Sobre mí
+    my_friends: Mis amigos
+    gallery: Galería
+    photos: Fotos
+    skills: Habilidades
+    reviews: Reseñas
+    applications: Aplicaciones
+    password: Contraseña
+    become_host: Conviértete en anfitrión
+
+project:
+    where: Dónde
+    when: Cuándo
+    who_you_need: A quién necesitas
+    what_to_do: Qué hacer
+    conditions: Condiciones
+    description: Descripción
+    final_touch: Toque final
+
+privacy_policy: Política de privacidad

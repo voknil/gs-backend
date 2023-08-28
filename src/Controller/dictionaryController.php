@@ -3,15 +3,27 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\UserLocaleNotSet;
+use App\I18N\TranslationCommandProcessor;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class dictionaryController extends AbstractController
 {
+
+    private readonly TranslationCommandProcessor $commandProcessor;
+
+    /**
+     * @param TranslationCommandProcessor $commandProcessor
+     */
+    public function __construct(TranslationCommandProcessor $commandProcessor)
+    {
+        $this->commandProcessor = $commandProcessor;
+    }
+
     #[Route('/dict/organization/types/', name: 'app_dictionary_organization_type_list', methods: ['GET'])]
     #[OA\Get(
         summary: "Organization type list"
@@ -33,6 +45,7 @@ class dictionaryController extends AbstractController
         ];
         return $this->json($data);
     }
+
 
     #[Route('/dict/locale/', name: 'app_dictionary_locale_list', methods: ['GET'])]
     #[OA\Get(
@@ -56,10 +69,13 @@ class dictionaryController extends AbstractController
         return $this->json($data);
     }
 
-    #[Route('/dict/translate/{dictionaryId}', name: 'app_dictionary_translate', methods: ['GET'])]
-    public function getTranslate(string $dictionaryId, TranslatorInterface $translator): JsonResponse
+    /**
+     * @throws UserLocaleNotSet
+     */
+    #[Route('/public/dict/translate/{dictionaryId}/{locale}', name: 'app_dictionary_translate', methods: ['GET'])]
+    public function getTranslate(string $dictionaryId, string $locale): JsonResponse
     {
-        $translatedWord = $translator->trans($dictionaryId, [], 'menu', 'en');
-        return $this->json(['dictionary' => $translatedWord]);
+        return $this->json($this->commandProcessor->getTranslate($dictionaryId, $locale));
     }
+
 }
