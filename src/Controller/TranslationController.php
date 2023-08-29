@@ -41,7 +41,7 @@ class TranslationController extends AbstractController
     #[OA\RequestBody(
         content: new OA\JsonContent(type: "object",
             example:'{
-              "local": "en"
+              "locale": "en"
             }'
         )
     )]

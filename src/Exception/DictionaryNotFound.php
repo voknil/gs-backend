@@ -6,10 +6,10 @@ namespace App\Exception;
 
 use Throwable;
 
-final class UserNotUpdated extends DomainException
+final class DictionaryNotFound extends DomainException
 {
     public function __construct(int $code = 0, ?Throwable $previous = null)
     {
-        parent::__construct("User not updated", $code, $previous);
+        parent::__construct("Dictionary not found", $code, $previous);
     }
 }
