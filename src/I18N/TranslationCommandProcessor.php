@@ -2,6 +2,7 @@
 
 namespace App\I18N;
 
+use App\Exception\DictionaryNotFound;
 use App\Exception\UserLocaleNotSet;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,17 +16,21 @@ final class TranslationCommandProcessor
     }
 
     /**
-     * @throws UserLocaleNotSet
+     * @throws DictionaryNotFound
      */
     public function getTranslate(string $dictionaryId, string $locale): array
     {
         try {
+            $dictionary = $this->translator->getCatalogue($locale)->all($dictionaryId);
+            if (!$dictionary) {
+                throw new DictionaryNotFound();
+            }
             $translatedWord['id'] = $dictionaryId;
             $translatedWord['data']['locale'] = $locale;
-            $translatedWord['data']['text'] = $this->translator->getCatalogue($locale)->all($dictionaryId);
+            $translatedWord['data']['text'] = $dictionary;
             return $translatedWord;
         } catch (InvalidArgumentException $exception) {
-            throw new UserLocaleNotSet();
+            throw new DictionaryNotFound();
         }
     }
 

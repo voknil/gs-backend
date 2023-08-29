@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\DictionaryNotFound;
 use App\Exception\UserLocaleNotSet;
 use App\I18N\TranslationCommandProcessor;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -70,7 +71,7 @@ class dictionaryController extends AbstractController
     }
 
     /**
-     * @throws UserLocaleNotSet
+     * @throws DictionaryNotFound
      */
     #[Route('/public/dict/translate/{dictionaryId}/{locale}', name: 'app_dictionary_translate', methods: ['GET'])]
     public function getTranslate(string $dictionaryId, string $locale): JsonResponse
