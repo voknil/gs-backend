@@ -17,9 +17,6 @@ class dictionaryController extends AbstractController
 
     private readonly TranslationCommandProcessor $commandProcessor;
 
-    /**
-     * @param TranslationCommandProcessor $commandProcessor
-     */
     public function __construct(TranslationCommandProcessor $commandProcessor)
     {
         $this->commandProcessor = $commandProcessor;
@@ -74,8 +71,12 @@ class dictionaryController extends AbstractController
      * @throws DictionaryNotFound
      */
     #[Route('/public/dict/translate/{dictionaryId}/{locale}', name: 'app_dictionary_translate', methods: ['GET'])]
-    public function getTranslate(string $dictionaryId, string $locale): JsonResponse
+    #[Route('/public/dict/translate/{dictionaryId}', name: 'app_dictionary_translate_no_locale', methods: ['GET'])]
+    public function getTranslate(string $dictionaryId, ?string $locale): JsonResponse
     {
+        if (empty($locale)) {
+            $locale = 'ru';
+        }
         return $this->json($this->commandProcessor->getTranslate($dictionaryId, $locale));
     }
 
